@@ -1,6 +1,9 @@
-FROM alpine:edge as build
+ARG ALPINE_VERSION=3.16.2
 
-ENV APORTS /home/builder/aports 
+FROM alpine:${ALPINE_VERSION} as build
+
+ARG ALPINE_VERSION
+ENV APORTS /home/builder/aports
 
 RUN apk add abuild curl tar make linux-headers patch g++ git gcc ncurses-dev autoconf file
 RUN printf "export JOBS=$(getconf _NPROCESSORS_ONLN)\nexport MAKEFLAGS=-j$(getconf _NPROCESSORS_ONLN)\n" >> /etc/abuild.conf
@@ -11,8 +14,11 @@ RUN su builder -c 'abuild-keygen -a -n'
 RUN su builder -c 'mkdir /home/builder/packages'
 RUN cp /home/builder/.abuild/*.pub /etc/apk/keys
 
-# RUN su builder -c 'git clone --depth 1 https://github.com/rvs/aports.git $APORTS'
-RUN su builder -c 'git clone --depth 1 https://git.alpinelinux.org/aports/ $APORTS'
+# RUN su builder -c 'git clone --single-branch --branch v3.16.2-riscv64 https://gitlab.alpinelinux.org/giggsoff/aports $APORTS'
+RUN su builder -c 'git clone --single-branch --branch v${ALPINE_VERSION} https://gitlab.alpinelinux.org/alpine/aports $APORTS'
+
+COPY /patches /tmp/patches
+RUN busybox su builder -c 'cd $APORTS && if [ -d /tmp/patches/${ALPINE_VERSION} ]; then git am /tmp/patches/${ALPINE_VERSION}/*.patch; fi'
 
 # before we run the build - lets setup our future rootfs
 RUN mkdir -p /rootfs/etc/apk/keys
@@ -22,43 +28,13 @@ RUN printf "/home/builder/packages/main\n/home/builder/packages/community\n" > /
 RUN tar -C / -cf - home/builder | tar -C /rootfs -xf -
 RUN rm -rf /home/builder/packages && ln -s /rootfs/home/builder/packages /home/builder/packages
 
-# we generate the following set of "steps" to shorten the time
-# to fix the issues if the build fails mid point
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 0'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 5'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 10'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 15'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 20'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 25'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 30'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 35'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 40'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 45'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 50'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 55'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 60'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 65'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 70'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 75'
-
-# FIXME: strictly speaking this shouldn't be needed
-RUN apk add chrpath
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 80'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 85'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 90'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 95'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 100'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 110'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 120'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 130'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 140'
-RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64 150'
+RUN busybox su builder -c 'cd $APORTS && sh -x ./scripts/bootstrap.sh riscv64'
 
 WORKDIR /
 
 RUN apk add --arch riscv64 -X /home/builder/packages/main --no-cache --initdb -p /rootfs busybox-static apk-tools-static
 RUN chroot /rootfs /bin/busybox.static --install -s /bin
-RUN chroot /rootfs /sbin/apk.static add apk-tools busybox alpine-baselayout alpine-base abuild
+RUN chroot /rootfs /sbin/apk.static add apk-tools busybox alpine-baselayout alpine-base abuild ca-certificates
 
 # now build the final image
 FROM scratch

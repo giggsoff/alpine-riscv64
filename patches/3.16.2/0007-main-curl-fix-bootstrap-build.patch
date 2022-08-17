@@ -1,0 +1,36 @@
+From 918d9993acb229da621b607b5630b8081eb779bb Mon Sep 17 00:00:00 2001
+From: psykose <alice@ayaya.dev>
+Date: Wed, 13 Jul 2022 00:25:19 +0000
+Subject: [PATCH 7/8] main/curl: fix bootstrap build
+
+`[ .. ] && ..` inside a function with set -e fails when the [ test ]
+returns a falsy value. this is only true inside a function; it is
+normally a special exception for set -e when written top-level.
+
+fix this by using a proper if block.
+
+fixes b0e6807ab3a36d3ddffbb8514d14570808167926
+
+(cherry picked from commit d8dd2d39475d9d9d0efd0c5f9e57d9810d77bc7f)
+---
+ main/curl/APKBUILD | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/main/curl/APKBUILD b/main/curl/APKBUILD
+index 7dfd7f77a2..300bd3fc4c 100644
+--- a/main/curl/APKBUILD
++++ b/main/curl/APKBUILD
+@@ -164,7 +164,9 @@ build() {
+ 	make
+ 
+ 	# generation of completions is not supported when cross-compiling.
+-	[ -z "$BOOTSTRAP" ] && make -C scripts/
++	if [ -z "$BOOTSTRAP" ]; then
++		make -C scripts/
++	fi
+ }
+ 
+ check() {
+-- 
+2.34.1
+

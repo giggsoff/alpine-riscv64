@@ -1,0 +1,95 @@
+From 62723fb7094758dddfa2314f2c4f41b1c7305b4e Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 13 Jul 2022 01:22:59 +0300
+Subject: [PATCH 3/8] main/meson: add cross-compile wrapper to abuild-meson
+
+(cherry picked from commit 3924083bef65bc79296b2357747c7447841af601)
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/meson/APKBUILD     |  2 +-
+ main/meson/abuild-meson | 50 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+), 1 deletion(-)
+ mode change 100644 => 100755 main/meson/abuild-meson
+
+diff --git a/main/meson/APKBUILD b/main/meson/APKBUILD
+index 7a8e3a0abf..108470de6a 100644
+--- a/main/meson/APKBUILD
++++ b/main/meson/APKBUILD
+@@ -94,5 +94,5 @@ sha512sums="
+ 52d2d06c27275b824046164403908be8555faed33aef862940623cef3e4f84b4c9b8d461c291642e6ea2c0db30b2ec4a99f46bde5d54945a26c1dbeca219cc32  meson-0.62.1.tar.gz
+ 0bbbf65f56f4feab43b4ec3fbe7d4c64ef9abb563ea114d0b960048319b936dd577e538a762991661a1cb256f32c0da0fef2d3add07730e37a8bbd4ec27dc611  skip-broken-tests.patch
+ a60dd85ecc1004523c213f4d06bfe10ba906a5115e93cfa4f1b70733e0c16f39c2c22b38ff71bb07c67166f3121c263a56842e8f8e2022f0a44094f956e28f02  fix-ninja-output-test.patch
+-1029e7a7af86ff4a5636f8cea4b5dbe970a58741d2f25dad50712664f1e387078e7583fafd4f7d1d420c9e116b0ea72b20cf22532cfece9a7d2d8cf60c9aadab  abuild-meson
++d5df4e76c7dc31bb423a0c9d4c0f536cbbf30f16de397185fe427429c27e3df4440545b0e84787443b42a4a6847518140002f78b48fd81a60aa384d75f24b10d  abuild-meson
+ "
+diff --git a/main/meson/abuild-meson b/main/meson/abuild-meson
+old mode 100644
+new mode 100755
+index c39396d938..a4e896b158
+--- a/main/meson/abuild-meson
++++ b/main/meson/abuild-meson
+@@ -1,6 +1,55 @@
+ #!/bin/sh -e
+ # Highly opinionated wrapper for Alpine Linux packaging
+ 
++. /usr/share/abuild/functions.sh
++
++# mostly taken from https://github.com/void-linux/void-packages/blob/22bf95cf356bf1a09212733d775d447d011f70b0/common/build-style/meson.sh
++if [ "$CHOST" != "$CBUILD" ]; then
++	_target_arch="$(hostspec_to_arch $CHOST)"
++	_meson_crossfile="abuild-meson.cross"
++	_meson_target_endian=little
++	# just the first part of the hostspec
++	_meson_target_cpu=${CHOST%%-*}
++	case "$_target_arch" in
++	arm*)
++		_meson_cpu_family=arm
++		;;
++	x86)
++		_meson_cpu_family=x86
++		;;
++	ppc64le)
++		_meson_cpu_family=ppc64
++		;;
++	s390x)
++		_meson_cpu_family=s390x
++		_meson_target_endian=big
++		;;
++	riscv64)
++		_meson_cpu_family=riscv64
++		;;
++	x86_64)
++		_meson_cpu_family=x86_64
++		;;
++	aarch64)
++		_meson_cpu_family=aarch64
++		;;
++	esac
++	cat > $_meson_crossfile <<-EOF
++	[binaries]
++	strip = '${CROSS_COMPILE}strip'
++	readelf = '${CROSS_COMPILE}readelf'
++	objcopy = '${CROSS_COMPILE}objcopy'
++	[properties]
++	needs_exe_wrapper = true
++	[host_machine]
++	system = 'linux'
++	cpu_family = '$_meson_cpu_family'
++	cpu = '$_meson_target_cpu'
++	endian = '$_meson_target_endian'
++	EOF
++	unset _meson_target_cpu _meson_target_endian _meson_cpu_family _target_arch
++fi
++
+ # TODO: enable LTO once our GCC works with LTO by default
+ exec meson \
+ 		--prefix=/usr \
+@@ -22,4 +71,5 @@ exec meson \
+ 		-Db_lto=false \
+ 		-Db_staticpic=true \
+ 		-Db_pie=true \
++		${_meson_crossfile:+--cross-file=$_meson_crossfile} \
+ 		"$@"
+-- 
+2.34.1
+

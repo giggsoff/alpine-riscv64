@@ -1,0 +1,25 @@
+From cc92fc09bb061c080c5bb0ed6b3a5394cd3940de Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 17 Aug 2022 21:40:18 +0300
+Subject: [PATCH 8/8] main/llvm13 add ncurses-dev dependency
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/llvm13/APKBUILD | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/main/llvm13/APKBUILD b/main/llvm13/APKBUILD
+index 3d828d05d6..e23f50efc2 100644
+--- a/main/llvm13/APKBUILD
++++ b/main/llvm13/APKBUILD
+@@ -38,6 +38,7 @@ if [ -n "$BOOTSTRAP" ]; then
+ 		-DCMAKE_CROSSCOMPILING=ON
+ 		-DLLVM_TABLEGEN=/usr/bin/llvm-tblgen
+ 	"
++    makedepends_host="$makedepends_host ncurses-dev"
+ fi
+ 
+ # Whether is this package the default (latest) LLVM version.
+-- 
+2.34.1
+

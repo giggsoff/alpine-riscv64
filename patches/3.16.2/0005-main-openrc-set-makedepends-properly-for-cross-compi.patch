@@ -1,0 +1,27 @@
+From 4d1cdb0f9011d42d9b27aba444c8ed3d37595805 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 13 Jul 2022 01:18:18 +0300
+Subject: [PATCH 5/8] main/openrc: set makedepends properly for cross-compiling
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/openrc/APKBUILD | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/main/openrc/APKBUILD b/main/openrc/APKBUILD
+index 4182b9c224..90da93ac28 100644
+--- a/main/openrc/APKBUILD
++++ b/main/openrc/APKBUILD
+@@ -8,7 +8,8 @@ url="https://github.com/OpenRC/openrc"
+ arch="all"
+ license="BSD-2-Clause"
+ depends="ifupdown-any"
+-makedepends="bsd-compat-headers linux-headers meson"
++makedepends_host="bsd-compat-headers linux-headers"
++makedepends_build="meson"
+ checkdepends="sed"
+ subpackages="$pkgname-dbg $pkgname-doc $pkgname-dev
+ 	agetty-openrc:_agetty_openrc:noarch
+-- 
+2.34.1
+

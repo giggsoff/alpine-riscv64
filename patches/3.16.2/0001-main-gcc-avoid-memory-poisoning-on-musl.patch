@@ -1,0 +1,242 @@
+From 57baaf82bc5a67201ea368d327ae2f36c03db828 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 17 Aug 2022 14:18:54 +0300
+Subject: [PATCH 1/8] main/gcc: avoid <memory> poisoning on musl
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ ...id-memory-poisoning-on-musl-PR106102.patch | 110 ++++++++++++++++++
+ ...ust-avoid-poisoning-patch-to-old-gcc.patch |  82 +++++++++++++
+ main/gcc/APKBUILD                             |   4 +
+ 3 files changed, 196 insertions(+)
+ create mode 100644 main/gcc/0052-c-avoid-memory-poisoning-on-musl-PR106102.patch
+ create mode 100644 main/gcc/0053-Adjust-avoid-poisoning-patch-to-old-gcc.patch
+
+diff --git a/main/gcc/0052-c-avoid-memory-poisoning-on-musl-PR106102.patch b/main/gcc/0052-c-avoid-memory-poisoning-on-musl-PR106102.patch
+new file mode 100644
+index 0000000000..d17eb531c9
+--- /dev/null
++++ b/main/gcc/0052-c-avoid-memory-poisoning-on-musl-PR106102.patch
+@@ -0,0 +1,110 @@
++From de6f402a54f7e6a3f8a79d723a25724e6274cc3e Mon Sep 17 00:00:00 2001
++From: Sergei Trofimovich <siarheit@google.com>
++Date: Mon, 27 Jun 2022 13:27:24 +0100
++Subject: [PATCH] c++: avoid <memory> poisoning on musl [PR106102]
++
++On musl <pthread.h> uses calloc() (via <sched.h>). <memory> includes
++it indirectly and exposes use of poisoned calloc() when module code
++is built:
++
++    /build/build/./prev-gcc/xg++ ... ../../gcc-13-20220626/gcc/cp/mapper-resolver.cc
++        In file included from /<<NIX>>/musl-1.2.3-dev/include/pthread.h:30,
++                 from /build/build/prev-x86_64-unknown-linux-musl/libstdc++-v3/include/x86_64-unknown-linux-musl/bits/gthr-default.h:35,
++                 ....
++                 from /build/build/prev-x86_64-unknown-linux-musl/libstdc++-v3/include/memory:77,
++                 from ../../gcc-13-20220626/gcc/../libcody/cody.hh:24,
++                 from ../../gcc-13-20220626/gcc/cp/../../c++tools/resolver.h:25,
++                 from ../../gcc-13-20220626/gcc/cp/../../c++tools/resolver.cc:23,
++                 from ../../gcc-13-20220626/gcc/cp/mapper-resolver.cc:32:
++    /<<NIX>>/musl-1.2.3-dev/include/sched.h:84:7: error: attempt to use poisoned "calloc"
++       84 | void *calloc(size_t, size_t);
++          |       ^
++    /<<NIX>>/musl-1.2.3-dev/include/sched.h:124:36: error: attempt to use poisoned "calloc"
++      124 | #define CPU_ALLOC(n) ((cpu_set_t *)calloc(1,CPU_ALLOC_SIZE(n)))
++          |                                    ^
++
++gcc/cp/
++
++	PR c++/106102
++	* mapper-client.cc: Include <memory> via "system.h".
++	* mapper-resolver.cc: Ditto.
++	* module.cc: Ditto.
++
++libcc1/
++
++	PR c++/106102
++	* libcc1plugin.cc: Include <memory> via "system.h".
++	* libcp1plugin.cc: Ditto.
++
++(cherry picked from commit 3b21c21f3f5726823e19728fdd1571a14aae0fb3)
++---
++ gcc/cp/mapper-client.cc   | 1 +
++ gcc/cp/mapper-resolver.cc | 1 +
++ gcc/cp/module.cc          | 1 +
++ libcc1/libcc1plugin.cc    | 1 +
++ libcc1/libcp1plugin.cc    | 1 +
++ 5 files changed, 5 insertions(+)
++
++diff --git a/gcc/cp/mapper-client.cc b/gcc/cp/mapper-client.cc
++index 8603a886a09..fe9544b5ba4 100644
++--- a/gcc/cp/mapper-client.cc
+++++ b/gcc/cp/mapper-client.cc
++@@ -27,6 +27,7 @@ along with GCC; see the file COPYING3.  If not see
++ #define INCLUDE_STRING
++ #define INCLUDE_VECTOR
++ #define INCLUDE_MAP
+++#define INCLUDE_MEMORY
++ #include "system.h"
++ 
++ #include "line-map.h"
++diff --git a/gcc/cp/mapper-resolver.cc b/gcc/cp/mapper-resolver.cc
++index e3d29fb5ada..e70d1b4ae2c 100644
++--- a/gcc/cp/mapper-resolver.cc
+++++ b/gcc/cp/mapper-resolver.cc
++@@ -25,6 +25,7 @@ along with GCC; see the file COPYING3.  If not see
++ #define INCLUDE_VECTOR
++ #define INCLUDE_ALGORITHM
++ #define INCLUDE_MAP
+++#define INCLUDE_MEMORY
++ #include "system.h"
++ 
++ // We don't want or need to be aware of networking
++diff --git a/gcc/cp/module.cc b/gcc/cp/module.cc
++index cebf9c35c1d..5c5d02bb523 100644
++--- a/gcc/cp/module.cc
+++++ b/gcc/cp/module.cc
++@@ -202,6 +202,7 @@ Classes used:
++ 
++ #define _DEFAULT_SOURCE 1 /* To get TZ field of struct tm, if available.  */
++ #include "config.h"
+++#define INCLUDE_MEMORY
++ #define INCLUDE_STRING
++ #define INCLUDE_VECTOR
++ #include "system.h"
++diff --git a/libcc1/libcc1plugin.cc b/libcc1/libcc1plugin.cc
++index 12ab5a57c8d..bdd0bdabe77 100644
++--- a/libcc1/libcc1plugin.cc
+++++ b/libcc1/libcc1plugin.cc
++@@ -31,6 +31,7 @@
++ #undef PACKAGE_TARNAME
++ #undef PACKAGE_VERSION
++ 
+++#define INCLUDE_MEMORY
++ #include "gcc-plugin.h"
++ #include "system.h"
++ #include "coretypes.h"
++diff --git a/libcc1/libcp1plugin.cc b/libcc1/libcp1plugin.cc
++index 83dab7f58b1..e2d5039a0a1 100644
++--- a/libcc1/libcp1plugin.cc
+++++ b/libcc1/libcp1plugin.cc
++@@ -32,6 +32,7 @@
++ #undef PACKAGE_TARNAME
++ #undef PACKAGE_VERSION
++ 
+++#define INCLUDE_MEMORY
++ #include "gcc-plugin.h"
++ #include "system.h"
++ #include "coretypes.h"
++-- 
++2.34.1
++
+diff --git a/main/gcc/0053-Adjust-avoid-poisoning-patch-to-old-gcc.patch b/main/gcc/0053-Adjust-avoid-poisoning-patch-to-old-gcc.patch
+new file mode 100644
+index 0000000000..df8dabb7ab
+--- /dev/null
++++ b/main/gcc/0053-Adjust-avoid-poisoning-patch-to-old-gcc.patch
+@@ -0,0 +1,82 @@
++From e34a93f90a08047fbe4893298af3c5996cd8aa06 Mon Sep 17 00:00:00 2001
++From: Petr Fedchenkov <giggsoff@gmail.com>
++Date: Wed, 17 Aug 2022 14:52:30 +0300
++Subject: [PATCH] Adjust avoid poisoning patch to old gcc
++
++Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
++---
++ gcc/cp/mapper-client.cc   | 2 +-
++ gcc/cp/mapper-resolver.cc | 2 +-
++ gcc/cp/module.cc          | 2 +-
++ libcc1/libcc1plugin.cc    | 2 +-
++ libcc1/libcp1plugin.cc    | 2 +-
++ 5 files changed, 5 insertions(+), 5 deletions(-)
++
++diff --git a/gcc/cp/mapper-client.cc b/gcc/cp/mapper-client.cc
++index a99b2065ccd..48048eecabc 100644
++--- a/gcc/cp/mapper-client.cc
+++++ b/gcc/cp/mapper-client.cc
++@@ -27,7 +27,7 @@ along with GCC; see the file COPYING3.  If not see
++ #define INCLUDE_STRING
++ #define INCLUDE_VECTOR
++ #define INCLUDE_MAP
++-#define INCLUDE_MEMORY
+++#define INCLUDE_UNIQUE_PTR
++ #include "system.h"
++ 
++ #include "line-map.h"
++diff --git a/gcc/cp/mapper-resolver.cc b/gcc/cp/mapper-resolver.cc
++index cb1ff5b402e..8dac1a04f76 100644
++--- a/gcc/cp/mapper-resolver.cc
+++++ b/gcc/cp/mapper-resolver.cc
++@@ -25,7 +25,7 @@ along with GCC; see the file COPYING3.  If not see
++ #define INCLUDE_VECTOR
++ #define INCLUDE_ALGORITHM
++ #define INCLUDE_MAP
++-#define INCLUDE_MEMORY
+++#define INCLUDE_UNIQUE_PTR
++ #include "system.h"
++ 
++ // We don't want or need to be aware of networking
++diff --git a/gcc/cp/module.cc b/gcc/cp/module.cc
++index 324544596b8..566a9042670 100644
++--- a/gcc/cp/module.cc
+++++ b/gcc/cp/module.cc
++@@ -202,7 +202,7 @@ Classes used:
++ 
++ #define _DEFAULT_SOURCE 1 /* To get TZ field of struct tm, if available.  */
++ #include "config.h"
++-#define INCLUDE_MEMORY
+++#define INCLUDE_UNIQUE_PTR
++ #define INCLUDE_STRING
++ #define INCLUDE_VECTOR
++ #include "system.h"
++diff --git a/libcc1/libcc1plugin.cc b/libcc1/libcc1plugin.cc
++index ff2d5c10d55..45a24029554 100644
++--- a/libcc1/libcc1plugin.cc
+++++ b/libcc1/libcc1plugin.cc
++@@ -31,7 +31,7 @@
++ #undef PACKAGE_TARNAME
++ #undef PACKAGE_VERSION
++ 
++-#define INCLUDE_MEMORY
+++#define INCLUDE_UNIQUE_PTR
++ #include "gcc-plugin.h"
++ #include "system.h"
++ #include "coretypes.h"
++diff --git a/libcc1/libcp1plugin.cc b/libcc1/libcp1plugin.cc
++index 492c5aa6eb5..1f5e67f060f 100644
++--- a/libcc1/libcp1plugin.cc
+++++ b/libcc1/libcp1plugin.cc
++@@ -32,7 +32,7 @@
++ #undef PACKAGE_TARNAME
++ #undef PACKAGE_VERSION
++ 
++-#define INCLUDE_MEMORY
+++#define INCLUDE_UNIQUE_PTR
++ #include "gcc-plugin.h"
++ #include "system.h"
++ #include "coretypes.h"
++-- 
++2.34.1
++
+diff --git a/main/gcc/APKBUILD b/main/gcc/APKBUILD
+index f0ec4ee18c..b9a03b9aec 100644
+--- a/main/gcc/APKBUILD
++++ b/main/gcc/APKBUILD
+@@ -231,6 +231,8 @@ source="https://dev.alpinelinux.org/~nenolod/gcc-${pkgver}.tar.xz
+ 	0049-properly-disable-fsplit-stack-on-non-glibc-targets-P.patch
+ 	0050-x86-Fix-fsplit-stack-feature-detection-via-TARGET_CA.patch
+ 	0051-go-gospec-forcibly-disable-fsplit-stack-support.patch
++	0052-c-avoid-memory-poisoning-on-musl-PR106102.patch
++	0053-Adjust-avoid-poisoning-patch-to-old-gcc.patch
+ 	libgo-musl-1.2.3.patch
+ 	"
+ 
+@@ -750,5 +752,7 @@ c44c6e5b28b622897af60e7e2dbf0d0284379eb57b39b480936e6d8b3743a24287c2a9ed69a530ef
+ 160ef16fde90546474e1548f1487c18d9b8edbae1d42a13ad06041b03214d06ff2c3586acd4d0bae27d48e48bb651861c6b9a140ade4ac59f00a268e85275da4  0049-properly-disable-fsplit-stack-on-non-glibc-targets-P.patch
+ f4d9ebf6d5c80d2f303404b9bf315bf81435c0d369b03b92f8e8510d82db72c2a30d84603307ddc0697df3845862ba93045e4a3724f8e491e7c01bd4396d8864  0050-x86-Fix-fsplit-stack-feature-detection-via-TARGET_CA.patch
+ 8ac54b3a46f7270d975fa3e1198ac37a2311a4b9940938958ffc148e4e9c82c3e81cf3e3c3abd43cef29137897cd6768220b432f828672e036308f7994422d2e  0051-go-gospec-forcibly-disable-fsplit-stack-support.patch
++f5c901b7348f7061af9576f07dfcb1e22c5d31813483c578b3ef3cafc4d08631eaed59f1f98ead04d28ad038c457753f0d85f1294ad502a4f3cdd9a50ccb4dd6  0052-c-avoid-memory-poisoning-on-musl-PR106102.patch
++f20da935ab87fdffd32e3f7d089d7fa0090f0d8f2aa1e1b4b79563b08272177bebb4a3bfc0c00367963976d15ee62d52ebdb82564db6ff61e43abdf003383e0d  0053-Adjust-avoid-poisoning-patch-to-old-gcc.patch
+ fa59b0fb081d97f8f63506b8793699588a95c602b5d468140eb1e80456597e52e1cc45dc0b234ac8e60e2b0cd606d94d111c8b0ae64c0a2be1bc1b8a184ceb93  libgo-musl-1.2.3.patch
+ "
+-- 
+2.34.1
+

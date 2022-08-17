@@ -1,0 +1,33 @@
+From f76f41ba21a23b44c0ff809c568a4ca3213948e3 Mon Sep 17 00:00:00 2001
+From: psykose <alice@ayaya.dev>
+Date: Tue, 12 Jul 2022 23:56:21 +0000
+Subject: [PATCH 6/8] main/openssh: move autoconf/automake to makedepends_build
+
+these are actually build not host deps, and this fails on a bootstrap
+otherwise as autoconf/automake are not cross-build for the host target.
+
+fixes 9c0baee37c3433f5f86c3530806541f594e2d276
+
+(cherry picked from commit ee366f540e4df58f030223c9a86a866f8e847654)
+---
+ main/openssh/APKBUILD | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/main/openssh/APKBUILD b/main/openssh/APKBUILD
+index 2bc8bf692a..1f7d2525d8 100644
+--- a/main/openssh/APKBUILD
++++ b/main/openssh/APKBUILD
+@@ -12,9 +12,8 @@ arch="all"
+ license="BSD"
+ options="suid"
+ depends="openssh-client openssh-sftp-server openssh-server"
++makedepends_build="autoconf automake"
+ makedepends_host="
+-	autoconf
+-	automake
+ 	linux-headers
+ 	openssl1.1-compat-dev
+ 	zlib-dev
+-- 
+2.34.1
+
