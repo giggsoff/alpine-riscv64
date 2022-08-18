@@ -1,0 +1,27 @@
+From 0c3636bccb235872b3c5449552f61bc8150b4027 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Thu, 18 Aug 2022 21:43:24 +0300
+Subject: [PATCH 1/1] main/tcl fix lib permission
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/tcl/APKBUILD | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/main/tcl/APKBUILD b/main/tcl/APKBUILD
+index 004d5e3206..5b1c04175a 100644
+--- a/main/tcl/APKBUILD
++++ b/main/tcl/APKBUILD
+@@ -53,6 +53,9 @@ package() {
+ 
+ 	# remove buildroot traces
+ 	find "$pkgdir" -name '*Config.sh' | xargs sed -i -e "s#${srcdir}#/usr/src#"
++
++	# Fix permissions
++	chmod -v 0755 "$pkgdir"/usr/lib/libtcl*
+ }
+ 
+ check() {
+-- 
+2.34.1
+

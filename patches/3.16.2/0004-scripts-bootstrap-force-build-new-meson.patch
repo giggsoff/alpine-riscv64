@@ -1,7 +1,7 @@
 From 70ca17a97fcdae2333bca1239ce5322347d799c5 Mon Sep 17 00:00:00 2001
 From: Petr Fedchenkov <giggsoff@gmail.com>
 Date: Wed, 17 Aug 2022 19:37:09 +0300
-Subject: [PATCH 4/8] scripts/bootstrap force build new meson
+Subject: [PATCH 1/1] scripts/bootstrap force build new meson
 
 Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
 ---

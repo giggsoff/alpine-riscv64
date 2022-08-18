@@ -1,7 +1,7 @@
 From 57baaf82bc5a67201ea368d327ae2f36c03db828 Mon Sep 17 00:00:00 2001
 From: Petr Fedchenkov <giggsoff@gmail.com>
 Date: Wed, 17 Aug 2022 14:18:54 +0300
-Subject: [PATCH 1/8] main/gcc: avoid <memory> poisoning on musl
+Subject: [PATCH 1/1] main/gcc: avoid <memory> poisoning on musl
 
 Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
 ---

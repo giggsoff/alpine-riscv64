@@ -1,7 +1,7 @@
 From 918d9993acb229da621b607b5630b8081eb779bb Mon Sep 17 00:00:00 2001
 From: psykose <alice@ayaya.dev>
 Date: Wed, 13 Jul 2022 00:25:19 +0000
-Subject: [PATCH 7/8] main/curl: fix bootstrap build
+Subject: [PATCH 1/1] main/curl: fix bootstrap build
 
 `[ .. ] && ..` inside a function with set -e fails when the [ test ]
 returns a falsy value. this is only true inside a function; it is

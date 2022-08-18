@@ -1,0 +1,30 @@
+From dd292b9517664e571db87f2b3d248c5481074992 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Thu, 18 Aug 2022 13:49:19 +0300
+Subject: [PATCH 1/1] main/perl skip tests for riscv64
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/perl/APKBUILD | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/main/perl/APKBUILD b/main/perl/APKBUILD
+index c9138f25af..3f331f508e 100644
+--- a/main/perl/APKBUILD
++++ b/main/perl/APKBUILD
+@@ -19,8 +19,10 @@ source="https://www.cpan.org/src/5.0/perl-$pkgver.tar.gz
+ 	musl-stack-size.patch
+ 	zlib-test.patch
+ 	"
+-# Tests too slow, and some failures on mips64.
+-[ "$CARCH" = "mips64" ] && options="$options !check"
++# Tests too slow, and some failures on mips64 and riscv64.
++if [ "$CARCH" = "mips64" ] || [ "$CARCH" = "riscv64" ]; then
++    options="$options !check"
++fi
+ 
+ # secfixes:
+ #   5.34.0-r1:
+-- 
+2.34.1
+

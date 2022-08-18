@@ -1,0 +1,25 @@
+From 5582ca0870e7bd06ee98838497b329940211df6f Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Thu, 18 Aug 2022 19:04:59 +0300
+Subject: [PATCH 1/1] scripts/bootstrap add another packages to bootstrap
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ scripts/bootstrap.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/scripts/bootstrap.sh b/scripts/bootstrap.sh
+index ba867e8f16..941736d169 100755
+--- a/scripts/bootstrap.sh
++++ b/scripts/bootstrap.sh
+@@ -132,6 +132,7 @@ for PKG in fortify-headers linux-headers musl libc-dev pkgconf zlib \
+ 	   brotli libev c-ares cunit nghttp2 curl \
+ 	   pcre libssh2 community/http-parser community/libgit2 \
+ 	   libxml2 pax-utils llvm13 community/rust \
++	   diffutils m4 meson bison \
+ 	   $KERNEL_PKG ; do
+ 
+ 	if [ "$NEEDS_LIBATOMIC" = "yes" ]; then
+-- 
+2.34.1
+

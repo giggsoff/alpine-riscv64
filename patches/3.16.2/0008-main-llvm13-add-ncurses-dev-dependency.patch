@@ -1,7 +1,7 @@
 From cc92fc09bb061c080c5bb0ed6b3a5394cd3940de Mon Sep 17 00:00:00 2001
 From: Petr Fedchenkov <giggsoff@gmail.com>
 Date: Wed, 17 Aug 2022 21:40:18 +0300
-Subject: [PATCH 8/8] main/llvm13 add ncurses-dev dependency
+Subject: [PATCH 1/1] main/llvm13 add ncurses-dev dependency
 
 Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
 ---

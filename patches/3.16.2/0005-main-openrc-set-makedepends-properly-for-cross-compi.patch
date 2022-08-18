@@ -1,7 +1,7 @@
 From 4d1cdb0f9011d42d9b27aba444c8ed3d37595805 Mon Sep 17 00:00:00 2001
 From: Petr Fedchenkov <giggsoff@gmail.com>
 Date: Wed, 13 Jul 2022 01:18:18 +0300
-Subject: [PATCH 5/8] main/openrc: set makedepends properly for cross-compiling
+Subject: [PATCH 1/1] main/openrc: set makedepends properly for cross-compiling
 
 Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
 ---

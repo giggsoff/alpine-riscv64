@@ -1,0 +1,26 @@
+From 0b1807e9840326c0f6a9b33887a87f625bb2324a Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Thu, 18 Aug 2022 23:15:09 +0300
+Subject: [PATCH 1/1] main/libtool fix check dependency
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/libtool/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/libtool/APKBUILD b/main/libtool/APKBUILD
+index 5d55291509..9408b9bbfb 100644
+--- a/main/libtool/APKBUILD
++++ b/main/libtool/APKBUILD
+@@ -11,7 +11,7 @@ source="https://ftp.gnu.org/gnu/libtool/libtool-$pkgver.tar.gz
+ 	"
+ depends="libltdl"
+ makedepends="m4 help2man"
+-checkdepends="gawk autoconf automake gzip"
++checkdepends="coreutils gawk autoconf automake gzip"
+ subpackages="libltdl-static libltdl $pkgname-doc"
+ options="libtool"
+ 
+-- 
+2.34.1
+
