@@ -1,0 +1,26 @@
+From 3d7298b986cd3093ccc81e7dd31525dfd938641c Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Sun, 21 Aug 2022 20:26:07 +0300
+Subject: [PATCH] main/libice add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/libice/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/libice/APKBUILD b/main/libice/APKBUILD
+index f0423a57c5..d37dc4f4c6 100644
+--- a/main/libice/APKBUILD
++++ b/main/libice/APKBUILD
+@@ -7,7 +7,7 @@ url="http://xorg.freedesktop.org/"
+ arch="all"
+ license="X11"
+ makedepends="xorgproto xtrans util-macros xmlto check-dev
+-	autoconf automake libtool"
++	autoconf automake libtool coreutils"
+ subpackages="$pkgname-static $pkgname-dev $pkgname-doc"
+ source="https://www.x.org/releases/individual/lib/libICE-$pkgver.tar.bz2"
+ builddir="$srcdir/libICE-$pkgver"
+-- 
+2.34.1
+

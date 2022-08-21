@@ -1,0 +1,26 @@
+From 20c808d7c0feb385a0908b1a795830e54e1936c3 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Sun, 21 Aug 2022 20:41:38 +0300
+Subject: [PATCH] main/dosfstools add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/dosfstools/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/dosfstools/APKBUILD b/main/dosfstools/APKBUILD
+index 50c4839107..829b5121da 100644
+--- a/main/dosfstools/APKBUILD
++++ b/main/dosfstools/APKBUILD
+@@ -6,7 +6,7 @@ pkgdesc="DOS filesystem utilities"
+ url="https://github.com/dosfstools/dosfstools"
+ arch="all"
+ license="GPL-3.0-or-later"
+-makedepends="linux-headers autoconf automake libtool"
++makedepends="linux-headers autoconf automake libtool coreutils"
+ subpackages="$pkgname-doc"
+ source="https://github.com/dosfstools/dosfstools/releases/download/v$pkgver/dosfstools-$pkgver.tar.gz"
+ 
+-- 
+2.34.1
+
