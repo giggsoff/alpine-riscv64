@@ -1,0 +1,26 @@
+From d506827bc3ce96cfbbe3735219d188542b7f61e2 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Sun, 21 Aug 2022 16:56:33 +0300
+Subject: [PATCH] main/libpng add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/libpng/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/libpng/APKBUILD b/main/libpng/APKBUILD
+index 3ed50ed39a..a3c569e57f 100644
+--- a/main/libpng/APKBUILD
++++ b/main/libpng/APKBUILD
+@@ -7,7 +7,7 @@ pkgdesc="Portable Network Graphics library"
+ url="http://www.libpng.org"
+ arch="all"
+ license="Libpng"
+-makedepends="zlib-dev gawk autoconf automake libtool"
++makedepends="zlib-dev gawk autoconf automake libtool coreutils"
+ subpackages="$pkgname-doc $pkgname-static $pkgname-dev $pkgname-utils"
+ source="https://downloads.sourceforge.net/libpng/$pkgname-$pkgver.tar.gz
+ 	https://downloads.sourceforge.net/sourceforge/libpng-apng/$pkgname-$pkgver-apng.patch.gz
+-- 
+2.34.1
+

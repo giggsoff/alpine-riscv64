@@ -1,0 +1,28 @@
+From d7aa120c498a7a1dfb96989966c483774e166fe1 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Sun, 21 Aug 2022 17:51:20 +0300
+Subject: [PATCH] main/fontconfig skip check on riscv64
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/fontconfig/APKBUILD | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/main/fontconfig/APKBUILD b/main/fontconfig/APKBUILD
+index cb009bb472..38d9dfa5c4 100644
+--- a/main/fontconfig/APKBUILD
++++ b/main/fontconfig/APKBUILD
+@@ -15,6 +15,10 @@ source="https://www.freedesktop.org/software/fontconfig/release/fontconfig-$pkgv
+ 	fix-arithmetic.patch
+ 	"
+ 
++if [ "$CARCH" = "riscv64" ]; then
++    options="$options !check"
++fi
++
+ # For generation of man pages
+ export DOC2MAN=docbook2x-man
+ 
+-- 
+2.34.1
+

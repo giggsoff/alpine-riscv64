@@ -1,0 +1,26 @@
+From a80706f6f1e17bf7947783071a9689d80587491f Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Sun, 21 Aug 2022 18:31:32 +0300
+Subject: [PATCH] main/check add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/check/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/check/APKBUILD b/main/check/APKBUILD
+index f41e34a8ed..2c89feb1bf 100644
+--- a/main/check/APKBUILD
++++ b/main/check/APKBUILD
+@@ -8,7 +8,7 @@ url="https://libcheck.github.io/check/"
+ arch="all"
+ license="LGPL-2.0-or-later"
+ makedepends="pkgconfig texinfo autoconf automake libtool"
+-checkdepends="diffutils gawk"
++checkdepends="diffutils gawk coreutils"
+ subpackages="$pkgname-doc $pkgname-dev"
+ source="https://github.com/libcheck/check/releases/download/$pkgver/check-$pkgver.tar.gz"
+ 
+-- 
+2.34.1
+
