@@ -1,0 +1,26 @@
+From 5c04327c850333e751ae4382bd599a4d57a19f7c Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Mon, 22 Aug 2022 21:37:40 +0300
+Subject: [PATCH] main/graphviz add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/graphviz/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/graphviz/APKBUILD b/main/graphviz/APKBUILD
+index 08e3045f05..ff662bada8 100644
+--- a/main/graphviz/APKBUILD
++++ b/main/graphviz/APKBUILD
+@@ -13,7 +13,7 @@ depends_dev="zlib-dev libpng-dev libjpeg-turbo-dev expat-dev
+ 	fontconfig-dev libsm-dev libxext-dev cairo-dev pango-dev
+ 	gmp-dev freetype-dev python3-dev"
+ makedepends="$depends_dev flex swig m4 libtool libxaw-dev bison lua$_luaver-dev
+-	libltdl tcl autoconf automake bash"
++	libltdl tcl autoconf automake bash coreutils"
+ install="$pkgname.pre-deinstall"
+ triggers="$pkgname.trigger=/usr/lib/graphviz"
+ subpackages="$pkgname-dev $pkgname-doc py3-gv:_py3 lua$_luaver-$pkgname:_lua
+-- 
+2.34.1
+
