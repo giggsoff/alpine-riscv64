@@ -1,0 +1,25 @@
+From db0bbf8fe17e61d62e07aca7a8f6e90bd380a849 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Mon, 22 Aug 2022 17:33:08 +0300
+Subject: [PATCH] main/ethtool skip tests
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/ethtool/APKBUILD | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/main/ethtool/APKBUILD b/main/ethtool/APKBUILD
+index 0e6a8e6e06..54f5924a2e 100644
+--- a/main/ethtool/APKBUILD
++++ b/main/ethtool/APKBUILD
+@@ -11,6 +11,7 @@ makedepends="linux-headers libmnl-dev"
+ subpackages="$pkgname-doc $pkgname-bash-completion:bashcomp:noarch"
+ source="https://www.kernel.org/pub/software/network/ethtool/ethtool-$pkgver.tar.xz"
+ [ "$CARCH" = "s390x" ] && options="!check" # failing tests but we need it anyway
++[ "$CARCH" = "riscv64" ] && options="!check"
+ 
+ build() {
+ 	./configure \
+-- 
+2.34.1
+

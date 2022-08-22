@@ -1,0 +1,26 @@
+From 20bc752cc1c62ef99821b167a0955643d1e9b2da Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Mon, 22 Aug 2022 17:09:22 +0300
+Subject: [PATCH] main/musl-obstack add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/musl-obstack/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/musl-obstack/APKBUILD b/main/musl-obstack/APKBUILD
+index 4d28d11098..62d097f99d 100644
+--- a/main/musl-obstack/APKBUILD
++++ b/main/musl-obstack/APKBUILD
+@@ -7,7 +7,7 @@ url="https://github.com/void-linux/musl-obstack"
+ arch="all"
+ license="LGPL-2.1-or-later"
+ options="!check" # no test suite
+-makedepends="automake autoconf libtool"
++makedepends="automake autoconf libtool coreutils"
+ subpackages="$pkgname-dev"
+ source="$pkgname-$pkgver.tar.gz::https://github.com/void-linux/musl-obstack/archive/v$pkgver.tar.gz"
+ 
+-- 
+2.34.1
+
