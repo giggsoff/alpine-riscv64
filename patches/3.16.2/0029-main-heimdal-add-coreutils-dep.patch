@@ -1,0 +1,26 @@
+From 20004b920b5e4f6be9daf3efe65e8311c7ff8aa3 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 23 Aug 2022 10:40:17 +0300
+Subject: [PATCH] main/heimdal add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/heimdal/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/heimdal/APKBUILD b/main/heimdal/APKBUILD
+index 48b898a04a..504a3f8a42 100644
+--- a/main/heimdal/APKBUILD
++++ b/main/heimdal/APKBUILD
+@@ -11,7 +11,7 @@ license="BSD-3-Clause"
+ depends="krb5-conf"
+ depends_dev="openssl1.1-compat-dev e2fsprogs-dev"
+ makedepends="$depends_dev autoconf automake bash gawk libtool
+-	ncurses-dev perl readline-dev sqlite-dev texinfo perl-json gdbm-dev"
++	ncurses-dev perl readline-dev sqlite-dev texinfo perl-json gdbm-dev coreutils"
+ options="suid !check" #FIXME: FAIL: snprintf-test
+ subpackages="$pkgname-doc $pkgname-dev $pkgname-libs $pkgname-su $pkgname-openrc"
+ source="https://github.com/heimdal/heimdal/releases/download/heimdal-$pkgver/heimdal-$pkgver.tar.gz
+-- 
+2.34.1
+

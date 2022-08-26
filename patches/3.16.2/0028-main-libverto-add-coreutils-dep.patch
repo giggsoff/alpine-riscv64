@@ -1,0 +1,26 @@
+From 23e01a82d4ac6bd579ae45ea3be7d7f9f1cb2ca2 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 23 Aug 2022 10:19:29 +0300
+Subject: [PATCH] main/libverto add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/libverto/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/libverto/APKBUILD b/main/libverto/APKBUILD
+index 9cc459c3e4..5c9588444d 100644
+--- a/main/libverto/APKBUILD
++++ b/main/libverto/APKBUILD
+@@ -7,7 +7,7 @@ pkgdesc="Main loop abstraction library"
+ url="https://github.com/npmccallum/libverto"
+ arch="all"
+ license="MIT"
+-makedepends="glib-dev libevent-dev libev-dev automake autoconf libtool"
++makedepends="glib-dev libevent-dev libev-dev automake autoconf libtool coreutils"
+ subpackages="$pkgname-dev $pkgname-libev $pkgname-libevent $pkgname-glib"
+ source="$pkgname-$pkgver.tar.gz::https://github.com/npmccallum/libverto/archive/$pkgver.tar.gz"
+ 
+-- 
+2.34.1
+

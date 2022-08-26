@@ -1,0 +1,28 @@
+From d3ca6603481e4e76bf630ebb6c5204acb7e876f5 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 24 Aug 2022 12:41:16 +0300
+Subject: [PATCH] main/wayland skip tests
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/wayland/APKBUILD | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/main/wayland/APKBUILD b/main/wayland/APKBUILD
+index aee4787d49..233a130679 100644
+--- a/main/wayland/APKBUILD
++++ b/main/wayland/APKBUILD
+@@ -17,6 +17,10 @@ source="https://wayland.freedesktop.org/releases/wayland-$pkgver.tar.xz
+ 	tests-ignore-debugger.patch
+ 	"
+ 
++case "$CARCH" in
++	riscv64) options="!check"
++esac
++
+ build() {
+ 	abuild-meson \
+ 		-Ddocumentation=false \
+-- 
+2.34.1
+

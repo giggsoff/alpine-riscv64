@@ -1,0 +1,25 @@
+From c43af9ab7747daaa49a32eb0326c6806707708e1 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 23 Aug 2022 11:07:44 +0300
+Subject: [PATCH] main/cyrus-sasl add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/cyrus-sasl/APKBUILD | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/main/cyrus-sasl/APKBUILD b/main/cyrus-sasl/APKBUILD
+index 560775e1c8..798b2a09bd 100644
+--- a/main/cyrus-sasl/APKBUILD
++++ b/main/cyrus-sasl/APKBUILD
+@@ -33,6 +33,7 @@ makedepends="
+ 	automake
+ 	autoconf
+ 	libtool
++	coreutils
+ 	"
+ source="https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-$pkgver/cyrus-sasl-$pkgver.tar.gz
+ 	saslauthd.initd
+-- 
+2.34.1
+

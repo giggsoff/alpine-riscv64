@@ -1,0 +1,28 @@
+From 9ef14199c99cee73ac6ab469896777b7e34988ae Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 24 Aug 2022 18:12:38 +0300
+Subject: [PATCH] main/gdk-pixbuf skip tests
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/gdk-pixbuf/APKBUILD | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/main/gdk-pixbuf/APKBUILD b/main/gdk-pixbuf/APKBUILD
+index 2ce2be5905..67e850dd5a 100644
+--- a/main/gdk-pixbuf/APKBUILD
++++ b/main/gdk-pixbuf/APKBUILD
+@@ -17,6 +17,10 @@ subpackages="$pkgname-dev $pkgname-doc $pkgname-lang $pkgname-dbg"
+ source="https://download.gnome.org/sources/gdk-pixbuf/${pkgver%.*}/gdk-pixbuf-$pkgver.tar.xz"
+ replaces="gtk+"
+ 
++case "$CARCH" in
++	riscv64) options="!check"
++esac
++
+ # secfixes:
+ #   2.42.8-r0:
+ #     - CVE-2021-44648
+-- 
+2.34.1
+

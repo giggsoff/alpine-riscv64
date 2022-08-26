@@ -1,0 +1,26 @@
+From 01aa1a1a03ca1f35a55fbeac9f2b8cdafd7f1c56 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 24 Aug 2022 14:17:20 +0300
+Subject: [PATCH] main/libpaper add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/libpaper/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/libpaper/APKBUILD b/main/libpaper/APKBUILD
+index dc1d90980f..e3a7273e4a 100644
+--- a/main/libpaper/APKBUILD
++++ b/main/libpaper/APKBUILD
+@@ -7,7 +7,7 @@ url="https://packages.debian.org/unstable/source/libpaper"
+ arch="all"
+ options="!check"  # No test suite.
+ license="GPL-2.0-only"
+-makedepends="automake autoconf libtool"
++makedepends="automake autoconf libtool coreutils"
+ subpackages="$pkgname-dev $pkgname-doc"
+ source="https://deb.debian.org/debian/pool/main/libp/libpaper/libpaper_$pkgver.tar.gz"
+ 
+-- 
+2.34.1
+

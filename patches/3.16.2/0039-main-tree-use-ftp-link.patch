@@ -1,0 +1,26 @@
+From 0831b9a18f5c4c33d56f346e6469014845f761ff Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 24 Aug 2022 14:59:40 +0300
+Subject: [PATCH] main/tree use ftp link
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/tree/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/tree/APKBUILD b/main/tree/APKBUILD
+index d5dc39ab70..0cf9184d3f 100644
+--- a/main/tree/APKBUILD
++++ b/main/tree/APKBUILD
+@@ -9,7 +9,7 @@ license="GPL-2.0-or-later"
+ makedepends="$depends_dev"
+ options="!check"
+ subpackages="$pkgname-doc"
+-source="http://mama.indstate.edu/users/ice/tree/src/tree-$pkgver.tgz
++source="ftp://mama.indstate.edu/linux/tree/tree-$pkgver.tgz
+ 	0001-remove-03-cflag.patch
+ 	"
+ 
+-- 
+2.34.1
+

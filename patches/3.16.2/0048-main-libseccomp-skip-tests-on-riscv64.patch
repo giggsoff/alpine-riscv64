@@ -1,0 +1,26 @@
+From 2a92831524187d89eb668151c1fc24e1fa6def15 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 18:00:13 +0300
+Subject: [PATCH] main/libseccomp skip tests on riscv64
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/libseccomp/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/libseccomp/APKBUILD b/main/libseccomp/APKBUILD
+index 65a9173084..6a4995f0e2 100644
+--- a/main/libseccomp/APKBUILD
++++ b/main/libseccomp/APKBUILD
+@@ -18,7 +18,7 @@ source="https://github.com/seccomp/libseccomp/releases/download/v$pkgver/libsecc
+ 	"
+ 
+ case "$CARCH" in
+-	mips*) options="$options !check";;
++	mips* | riscv64) options="$options !check";;
+ esac
+ 
+ # secfixes:
+-- 
+2.34.1
+

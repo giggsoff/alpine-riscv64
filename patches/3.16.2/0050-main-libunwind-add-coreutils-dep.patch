@@ -1,0 +1,26 @@
+From af1f4af027ed0a6412624b329097265337f17607 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 18:51:44 +0300
+Subject: [PATCH] main/libunwind add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/libunwind/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/libunwind/APKBUILD b/main/libunwind/APKBUILD
+index 77aa7181b8..eae3fddf90 100644
+--- a/main/libunwind/APKBUILD
++++ b/main/libunwind/APKBUILD
+@@ -11,7 +11,7 @@ options="!check" # v1.4.0 12 tests failing - https://github.com/libunwind/libunw
+ depends_dev="libucontext-dev"
+ makedepends_build="autoconf automake libtool"
+ makedepends_host="$depends_dev linux-headers xz-dev"
+-makedepends="$makedepends_build $makedepends_host"
++makedepends="$makedepends_build $makedepends_host coreutils"
+ subpackages="$pkgname-dbg $pkgname-static $pkgname-dev $pkgname-doc"
+ source="https://download.savannah.gnu.org/releases/libunwind/libunwind-$pkgver.tar.gz
+ 	force-enable-man.patch
+-- 
+2.34.1
+

@@ -1,0 +1,35 @@
+From ebb84c242b8c8983f3c83cb90cb08f85a3d4189c Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 18:42:48 +0300
+Subject: [PATCH] main/libtirpc fix link and add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/libtirpc/APKBUILD | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/main/libtirpc/APKBUILD b/main/libtirpc/APKBUILD
+index 5b7a6f9dd6..26b6617b90 100644
+--- a/main/libtirpc/APKBUILD
++++ b/main/libtirpc/APKBUILD
+@@ -9,7 +9,7 @@ license="BSD-3-Clause"
+ options="!check"
+ depends="$pkgname-conf"
+ depends_dev="krb5-dev bsd-compat-headers"
+-makedepends="$depends_dev autoconf automake libtool linux-headers"
++makedepends="$depends_dev autoconf automake libtool linux-headers coreutils"
+ subpackages="
+ 	$pkgname-dbg
+ 	$pkgname-static
+@@ -18,7 +18,7 @@ subpackages="
+ 	$pkgname-conf::noarch
+ 	$pkgname-nokrb
+ 	"
+-source="https://sourceforge.net/projects/libtirpc/files/libtirpc/$pkgver/libtirpc-$pkgver.tar.bz2
++source="https://downloads.sourceforge.net/libtirpc/libtirpc-$pkgver.tar.bz2
+ 	soname-suffix.patch
+ 	CVE-2021-46828.patch
+ 	"
+-- 
+2.34.1
+

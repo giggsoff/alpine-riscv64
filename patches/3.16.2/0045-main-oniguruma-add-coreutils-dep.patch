@@ -1,0 +1,26 @@
+From b339462691378be47c93dce28980600fe06bb079 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 16:28:20 +0300
+Subject: [PATCH] main/oniguruma add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/oniguruma/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/oniguruma/APKBUILD b/main/oniguruma/APKBUILD
+index 03f839d21b..dad370b1fc 100644
+--- a/main/oniguruma/APKBUILD
++++ b/main/oniguruma/APKBUILD
+@@ -7,7 +7,7 @@ pkgdesc="a regular expressions library"
+ url="https://github.com/kkos/oniguruma"
+ arch="all"
+ license="BSD-2-Clause"
+-makedepends="automake autoconf libtool"
++makedepends="automake autoconf libtool coreutils"
+ subpackages="$pkgname-dev"
+ source="$pkgname-$pkgver.tar.gz::https://github.com/kkos/oniguruma/archive/v$pkgver.tar.gz"
+ 
+-- 
+2.34.1
+

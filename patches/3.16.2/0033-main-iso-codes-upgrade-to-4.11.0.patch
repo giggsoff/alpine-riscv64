@@ -1,0 +1,32 @@
+From a2db34328189891d4fb91a648694751ff1476d35 Mon Sep 17 00:00:00 2001
+From: Natanael Copa <ncopa@alpinelinux.org>
+Date: Wed, 27 Jul 2022 08:48:00 +0000
+Subject: [PATCH 2/2] main/iso-codes: upgrade to 4.11.0
+
+(cherry picked from commit b0cded37764682dc189aa4c122d5763f6b525706)
+---
+ main/iso-codes/APKBUILD | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/main/iso-codes/APKBUILD b/main/iso-codes/APKBUILD
+index 6ab0f0dc3c..cf65ed6fdd 100644
+--- a/main/iso-codes/APKBUILD
++++ b/main/iso-codes/APKBUILD
+@@ -1,6 +1,6 @@
+ # Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+ pkgname=iso-codes
+-pkgver=4.10.0
++pkgver=4.11.0
+ pkgrel=0
+ pkgdesc="ISO codes and their translations"
+ url="https://salsa.debian.org/iso-codes-team/iso-codes"
+@@ -27,5 +27,5 @@ package() {
+ }
+ 
+ sha512sums="
+-0b65288b2a1ffe2db68fe0784f2f97b1a1139c592a4c8938df2c6aa225c275ce2421e39e6bad47794a5371c1667ab88daac3f7032e60b4166f93e2c70335ba04  iso-codes_4.10.0.orig.tar.xz
++2617ae98cf5afd947dd6d3d0ffd83a8c84d53e86464d1c73de243bcd09c72618be4d955fd972d5e1db80f0f276a4c1b92ee684461269a5ef958ba7d20468fc51  iso-codes_4.11.0.orig.tar.xz
+ "
+-- 
+2.34.1
+

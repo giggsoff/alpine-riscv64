@@ -1,0 +1,26 @@
+From 357861f8f725d806f3890402555fb701ea436dcd Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 24 Aug 2022 13:46:34 +0300
+Subject: [PATCH] main/avahi add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/avahi/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/avahi/APKBUILD b/main/avahi/APKBUILD
+index 2b0508dcea..e79782aadf 100644
+--- a/main/avahi/APKBUILD
++++ b/main/avahi/APKBUILD
+@@ -13,7 +13,7 @@ makedepends="$depends_dev
+ 	intltool gobject-introspection-dev expat-dev
+ 	libdaemon-dev glib-dev dbus-dev libcap-dev
+ 	gettext-dev autoconf automake libtool
+-	libevent-dev"
++	libevent-dev coreutils"
+ install="$pkgname.pre-install"
+ subpackages="$pkgname-dev $pkgname-doc $pkgname-tools $pkgname-glib
+ 	$pkgname-libs $pkgname-compat-howl:howl
+-- 
+2.34.1
+

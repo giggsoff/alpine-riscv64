@@ -1,0 +1,25 @@
+From ff892976072e1365e1689bde60b09f1477586879 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 14:20:58 +0300
+Subject: [PATCH] main/gnupg add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/gnupg/APKBUILD | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/main/gnupg/APKBUILD b/main/gnupg/APKBUILD
+index ab0485a827..1e02f3d8f9 100644
+--- a/main/gnupg/APKBUILD
++++ b/main/gnupg/APKBUILD
+@@ -37,6 +37,7 @@ makedepends="
+ 	sqlite-dev
+ 	texinfo
+ 	zlib-dev
++	coreutils
+ 	"
+ install="$pkgname-scdaemon.pre-install"
+ subpackages="
+-- 
+2.34.1
+

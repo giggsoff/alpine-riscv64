@@ -1,0 +1,34 @@
+From 22b3d4cdae9a5a07f330a5074c97660f03fe2be6 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 16:31:38 +0300
+Subject: [PATCH] main/jq add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/jq/APKBUILD | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/main/jq/APKBUILD b/main/jq/APKBUILD
+index 57afc94ce3..5a76cce31f 100644
+--- a/main/jq/APKBUILD
++++ b/main/jq/APKBUILD
+@@ -7,11 +7,15 @@ pkgdesc="A lightweight and flexible command-line JSON processor"
+ url="https://stedolan.github.io/jq/"
+ arch="all"
+ license="MIT"
+-makedepends="oniguruma-dev automake autoconf libtool"
++makedepends="oniguruma-dev automake autoconf libtool coreutils"
+ subpackages="$pkgname-doc $pkgname-dev"
+ source="https://github.com/stedolan/jq/archive/jq-$pkgver.tar.gz"
+ builddir="$srcdir/$pkgname-$pkgname-$pkgver"
+ 
++if [ "$CARCH" = "riscv64" ]; then
++	options="$options textrels"
++fi
++
+ # secfixes:
+ #   1.6_rc1-r0:
+ #     - CVE-2016-4074
+-- 
+2.34.1
+

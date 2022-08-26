@@ -1,0 +1,26 @@
+From 20f18ac8f15e5eff9a2e2733cc24cb7d5cd8ad6e Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 24 Aug 2022 18:05:16 +0300
+Subject: [PATCH] main/itstool add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/itstool/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/itstool/APKBUILD b/main/itstool/APKBUILD
+index f029a61c17..6ce0b5124c 100644
+--- a/main/itstool/APKBUILD
++++ b/main/itstool/APKBUILD
+@@ -7,7 +7,7 @@ url="https://itstool.org/"
+ arch="noarch"
+ license="GPL-3.0-or-later"
+ depends="py3-libxml2 python3"
+-makedepends="autoconf automake"
++makedepends="autoconf automake coreutils"
+ checkdepends="diffutils gettext"
+ subpackages="$pkgname-doc"
+ source="https://github.com/itstool/itstool/archive/$pkgver/itstool-$pkgver.tar.gz
+-- 
+2.34.1
+

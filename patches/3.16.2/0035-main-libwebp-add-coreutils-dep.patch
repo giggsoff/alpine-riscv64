@@ -1,0 +1,26 @@
+From 5e5d150de4e694cd7fbab6eb2d8f6739ce097c03 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 24 Aug 2022 13:08:21 +0300
+Subject: [PATCH] main/libwebp add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/libwebp/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/libwebp/APKBUILD b/main/libwebp/APKBUILD
+index 8c9e7100a2..f55aca27e6 100644
+--- a/main/libwebp/APKBUILD
++++ b/main/libwebp/APKBUILD
+@@ -7,7 +7,7 @@ pkgdesc="Libraries for working with WebP images"
+ url="https://developers.google.com/speed/webp"
+ arch="all"
+ license="BSD-3-Clause"
+-makedepends="autoconf automake giflib-dev libjpeg-turbo-dev libpng-dev libtool"
++makedepends="autoconf automake giflib-dev libjpeg-turbo-dev libpng-dev libtool coreutils"
+ subpackages="$pkgname-static $pkgname-dev $pkgname-doc $pkgname-tools"
+ source="https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-$pkgver.tar.gz"
+ 
+-- 
+2.34.1
+
