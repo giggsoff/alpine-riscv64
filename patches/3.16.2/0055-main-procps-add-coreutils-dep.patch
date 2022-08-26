@@ -1,0 +1,26 @@
+From 702c0ee88bcb4a6d6d83945957b9ee811db147f1 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 22:41:44 +0300
+Subject: [PATCH] main/procps add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/procps/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/procps/APKBUILD b/main/procps/APKBUILD
+index 425ce3a21a..bbda6de814 100644
+--- a/main/procps/APKBUILD
++++ b/main/procps/APKBUILD
+@@ -6,7 +6,7 @@ pkgdesc="Utilities for monitoring your system and processes on your system"
+ url="https://gitlab.com/procps-ng/procps"
+ arch="all"
+ license="GPL-2.0-or-later AND LGPL-2.1-or-later"
+-makedepends="ncurses-dev gettext-dev autoconf automake libtool"
++makedepends="ncurses-dev gettext-dev autoconf automake libtool coreutils"
+ checkdepends="dejagnu"
+ subpackages="$pkgname-dev $pkgname-doc $pkgname-lang libproc"
+ source="https://gitlab.com/procps-ng/procps/-/archive/v$pkgver/procps-v$pkgver.tar.gz
+-- 
+2.34.1
+

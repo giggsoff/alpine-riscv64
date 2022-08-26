@@ -1,0 +1,26 @@
+From 729970384ef10bf70775e5c6a8f04d421349d5b4 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 23:20:21 +0300
+Subject: [PATCH] main/libnl3 add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/libnl3/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/libnl3/APKBUILD b/main/libnl3/APKBUILD
+index 0ddd5e3b73..f5edea0f26 100644
+--- a/main/libnl3/APKBUILD
++++ b/main/libnl3/APKBUILD
+@@ -6,7 +6,7 @@ pkgdesc="Library for applications dealing with netlink sockets"
+ url="http://www.infradead.org/~tgr/libnl/"
+ arch="all"
+ license="LGPL-2.1-or-later"
+-makedepends="linux-headers flex bison libtool autoconf automake"
++makedepends="linux-headers flex bison libtool autoconf automake coreutils"
+ checkdepends="check-dev"
+ subpackages="$pkgname-dev $pkgname-doc $pkgname-cli"
+ source="https://github.com/thom311/libnl/releases/download/libnl${pkgver//./_}/libnl-$pkgver.tar.gz
+-- 
+2.34.1
+

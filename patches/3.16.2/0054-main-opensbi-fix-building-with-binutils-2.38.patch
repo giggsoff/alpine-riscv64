@@ -1,0 +1,99 @@
+From c18f1433fcd0db838b6b25b0774a7a2f0ccccfe5 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 22:22:50 +0300
+Subject: [PATCH] main/opensbi fix building with binutils 2.38
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ ...akefile-fix-build-with-binutils-2.38.patch | 58 +++++++++++++++++++
+ main/opensbi/APKBUILD                         |  4 +-
+ 2 files changed, 61 insertions(+), 1 deletion(-)
+ create mode 100644 main/opensbi/0001-Makefile-fix-build-with-binutils-2.38.patch
+
+diff --git a/main/opensbi/0001-Makefile-fix-build-with-binutils-2.38.patch b/main/opensbi/0001-Makefile-fix-build-with-binutils-2.38.patch
+new file mode 100644
+index 0000000000..d7b1125b33
+--- /dev/null
++++ b/main/opensbi/0001-Makefile-fix-build-with-binutils-2.38.patch
+@@ -0,0 +1,58 @@
++From 5d53b55aa77ffeefd4012445dfa6ad3535e1ff2c Mon Sep 17 00:00:00 2001
++From: Aurelien Jarno <aurelien@aurel32.net>
++Date: Fri, 28 Jan 2022 18:33:46 +0100
++Subject: [PATCH] Makefile: fix build with binutils 2.38
++
++From version 2.38, binutils default to ISA spec version 20191213. This
++means that the csr read/write (csrr*/csrw*) instructions and fence.i
++instruction has separated from the `I` extension, become two standalone
++extensions: Zicsr and Zifencei. As the kernel uses those instruction,
++this causes the following build failure:
++
++ CC        lib/sbi/sbi_tlb.o
++<<BUILDDIR>>/lib/sbi/sbi_tlb.c: Assembler messages:
++<<BUILDDIR>>/lib/sbi/sbi_tlb.c:190: Error: unrecognized opcode `fence.i'
++make: *** [Makefile:431: <<BUILDDIR>>/build/lib/sbi/sbi_tlb.o] Error 1
++
++The fix is to specify those extensions explicitly in -march. However as
++older binutils version do not support this, we first need to detect
++that.
++
++Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
++Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
++Tested-by: Alexandre Ghiti <alexandre.ghiti@canonical.com>
++Reviewed-by: Anup Patel <anup@brainfault.org>
++---
++ Makefile | 9 ++++++++-
++ 1 file changed, 8 insertions(+), 1 deletion(-)
++
++diff --git a/Makefile b/Makefile
++index 062883e..fc1ea13 100644
++--- a/Makefile
+++++ b/Makefile
++@@ -153,6 +153,9 @@ OPENSBI_LD_PIE := $(shell $(CC) $(CLANG_TARGET) $(RELAX_FLAG) $(USE_LD_FLAG) -fP
++ # Check whether the compiler supports -m(no-)save-restore
++ CC_SUPPORT_SAVE_RESTORE := $(shell $(CC) $(CLANG_TARGET) $(RELAX_FLAG) -nostdlib -mno-save-restore -x c /dev/null -o /dev/null 2>&1 | grep "\-save\-restore" >/dev/null && echo n || echo y)
++ 
+++# Check whether the assembler and the compiler support the Zicsr and Zifencei extensions
+++CC_SUPPORT_ZICSR_ZIFENCEI := $(shell $(CC) $(CLANG_TARGET) $(RELAX_FLAG) -nostdlib -march=rv$(OPENSBI_CC_XLEN)imafd_zicsr_zifencei -x c /dev/null -o /dev/null 2>&1 | grep "zicsr\|zifencei" > /dev/null && echo n || echo y)
+++
++ # Build Info:
++ # OPENSBI_BUILD_TIME_STAMP -- the compilation time stamp
++ # OPENSBI_BUILD_COMPILER_VERSION -- the compiler version info
++@@ -223,7 +226,11 @@ ifndef PLATFORM_RISCV_ABI
++ endif
++ ifndef PLATFORM_RISCV_ISA
++   ifneq ($(PLATFORM_RISCV_TOOLCHAIN_DEFAULT), 1)
++-    PLATFORM_RISCV_ISA = rv$(PLATFORM_RISCV_XLEN)imafdc
+++    ifeq ($(CC_SUPPORT_ZICSR_ZIFENCEI), y)
+++      PLATFORM_RISCV_ISA = rv$(PLATFORM_RISCV_XLEN)imafdc_zicsr_zifencei
+++    else
+++      PLATFORM_RISCV_ISA = rv$(PLATFORM_RISCV_XLEN)imafdc
+++    endif
++   else
++     PLATFORM_RISCV_ISA = $(OPENSBI_CC_ISA)
++   endif
++-- 
++2.34.1
++
+diff --git a/main/opensbi/APKBUILD b/main/opensbi/APKBUILD
+index 727a5dc41b..9d92b64097 100644
+--- a/main/opensbi/APKBUILD
++++ b/main/opensbi/APKBUILD
+@@ -9,7 +9,8 @@ url=" https://github.com/riscv/opensbi"
+ arch="riscv64"
+ license="BSD-2-Clause"
+ options="!check" # no tests
+-source="$pkgname-$pkgver.tar.gz::https://github.com/riscv/opensbi/archive/refs/tags/v$pkgver.tar.gz"
++source="$pkgname-$pkgver.tar.gz::https://github.com/riscv/opensbi/archive/refs/tags/v$pkgver.tar.gz
++0001-Makefile-fix-build-with-binutils-2.38.patch"
+ 
+ build() {
+ 	make PLATFORM=generic
+@@ -23,4 +24,5 @@ package() {
+ 
+ sha512sums="
+ 7efc2440df1aa7b3bfdd7b44f9c87f8cf15d0aff5a318b742bc591f7599a68e383bbae161a507fb0bb5520cb49fd7ff0f8f0bf5897868319f0f74270addfea26  opensbi-1.0.tar.gz
++80eaf3ccbccab65b24f137313c1e056de580efeafdc2769c9b1afcc888fd3b32ea8710503db8344b2a1dcfb1e920ee4b2e56004dd1c56de4fb0b630ae97e24dd  0001-Makefile-fix-build-with-binutils-2.38.patch
+ "
+-- 
+2.34.1
+

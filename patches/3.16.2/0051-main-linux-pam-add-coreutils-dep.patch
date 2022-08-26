@@ -1,0 +1,26 @@
+From dd5b97fbfc41958fbc8b5997f165ade39d906837 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 19:02:01 +0300
+Subject: [PATCH] main/linux-pam add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/linux-pam/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/linux-pam/APKBUILD b/main/linux-pam/APKBUILD
+index 967e2fc3c0..6d84e60aaa 100644
+--- a/main/linux-pam/APKBUILD
++++ b/main/linux-pam/APKBUILD
+@@ -9,7 +9,7 @@ url="https://www.kernel.org/pub/linux/libs/pam"
+ arch="all"
+ license="BSD-3-Clause"
+ depends_dev="gettext-dev"
+-makedepends="$depends_dev bison flex-dev autoconf automake libtool linux-headers"
++makedepends="$depends_dev bison flex-dev autoconf automake libtool linux-headers coreutils"
+ options="suid !check"
+ subpackages="$pkgname-dev $pkgname-doc"
+ source="
+-- 
+2.34.1
+

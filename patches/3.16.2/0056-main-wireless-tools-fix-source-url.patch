@@ -1,0 +1,34 @@
+From 562dc8a631707baef9d3a37c25eae6dac4ac244c Mon Sep 17 00:00:00 2001
+From: psykose <alice@ayaya.dev>
+Date: Wed, 6 Jul 2022 07:54:23 +0000
+Subject: [PATCH] main/wireless-tools: fix source url
+
+(cherry picked from commit 050085b1cd9f641ebfcf3000d24ef7eb0fa669bd)
+---
+ main/wireless-tools/APKBUILD | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/main/wireless-tools/APKBUILD b/main/wireless-tools/APKBUILD
+index ab1e40cd0f..07d057a8c0 100644
+--- a/main/wireless-tools/APKBUILD
++++ b/main/wireless-tools/APKBUILD
+@@ -10,7 +10,7 @@ license="GPL-2.0-only"
+ makedepends="linux-headers"
+ options="!check"
+ subpackages="$pkgname-dev $pkgname-doc"
+-source="http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/wireless_tools.${pkgver/_/.}.tar.gz
++source="https://hewlettpackard.github.io/wireless-tools/wireless_tools.${pkgver/_/.}.tar.gz
+ 	"
+ 
+ builddir="$srcdir"/wireless_tools.30
+@@ -28,4 +28,6 @@ package() {
+ 		INSTALL_MAN="$pkgdir"/usr/share/man install
+ }
+ 
+-sha512sums="0561923bca075af4754d21e1be303cbd1ce3558cb6481c9c12bc7d330a353acf8ad81a822488570e859480287999c3bb2a698c993556a92f0699743e0a527ff1  wireless_tools.30.pre9.tar.gz"
++sha512sums="
++0561923bca075af4754d21e1be303cbd1ce3558cb6481c9c12bc7d330a353acf8ad81a822488570e859480287999c3bb2a698c993556a92f0699743e0a527ff1  wireless_tools.30.pre9.tar.gz
++"
+-- 
+2.34.1
+

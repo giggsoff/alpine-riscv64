@@ -1,0 +1,26 @@
+From 9cfafd6554634f3c92d28158ecd2436b7780d1ad Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 21:50:26 +0300
+Subject: [PATCH] main/rsync fix link
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/rsync/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/rsync/APKBUILD b/main/rsync/APKBUILD
+index 3ca987e9e8..3cce3fbd2b 100644
+--- a/main/rsync/APKBUILD
++++ b/main/rsync/APKBUILD
+@@ -8,7 +8,7 @@ arch="all"
+ license="GPL-3.0-or-later"
+ makedepends="perl acl-dev attr-dev popt-dev zlib-dev zstd-dev lz4-dev"
+ subpackages="$pkgname-doc $pkgname-openrc rrsync"
+-source="https://download.samba.org/pub/rsync/rsync-$pkgver.tar.gz
++source="https://download.samba.org/pub/rsync/src/rsync-$pkgver.tar.gz
+ 	CVE-2022-29154.patch
+ 	rsyncd.initd
+ 	rsyncd.confd
+-- 
+2.34.1
+

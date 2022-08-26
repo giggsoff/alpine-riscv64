@@ -1,0 +1,26 @@
+From 86205861767f42a1f3e28acf5a3019c67f2bb2c1 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Fri, 26 Aug 2022 20:47:22 +0300
+Subject: [PATCH] main/protobuf add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/protobuf/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/protobuf/APKBUILD b/main/protobuf/APKBUILD
+index 5c12fbee47..2b74fedb53 100644
+--- a/main/protobuf/APKBUILD
++++ b/main/protobuf/APKBUILD
+@@ -14,7 +14,7 @@ license="BSD-3-Clause"
+ depends="protoc=$pkgver-r$pkgrel libprotoc=$pkgver-r$pkgrel
+ 	libprotobuf=$pkgver-r$pkgrel libprotobuf-lite=$pkgver-r$pkgrel"
+ depends_dev="zlib-dev"
+-makedepends="$depends_dev autoconf automake libtool ruby ruby-dev ruby-rake"
++makedepends="$depends_dev autoconf automake libtool ruby ruby-dev ruby-rake coreutils"
+ subpackages="
+ 	ruby-$_gemname:_ruby
+ 	$pkgname-dev
+-- 
+2.34.1
+
