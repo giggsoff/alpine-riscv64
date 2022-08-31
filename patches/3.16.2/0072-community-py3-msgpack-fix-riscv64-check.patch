@@ -1,0 +1,25 @@
+From 35854da18ff4e4f8d7eeae3cddb40c254faf8bbb Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 30 Aug 2022 16:16:19 +0300
+Subject: [PATCH] community/py3-msgpack fix riscv64 check
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ community/py3-msgpack/APKBUILD | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/community/py3-msgpack/APKBUILD b/community/py3-msgpack/APKBUILD
+index 87fd6db620..c6a0cdc00c 100644
+--- a/community/py3-msgpack/APKBUILD
++++ b/community/py3-msgpack/APKBUILD
+@@ -29,6 +29,7 @@ check() {
+ 		x86) _pyarch=i686 ;;
+ 		armhf|armv7) _pyarch=armv8l ;;
+ 		s390x) _pyarch=s390x;;
++		riscv64) _pyarch=riscv64;;
+ 	esac
+ 
+ 	local _py3ver=$(python3 -c 'import sys; print("{}.{}".format(sys.version_info.major, sys.version_info.minor))')
+-- 
+2.34.1
+

@@ -1,0 +1,25 @@
+From c0edc8c50f17f1a2581d0e416d8880e1cbfb9949 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 30 Aug 2022 21:23:27 +0300
+Subject: [PATCH] community/py3-flit add git dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ community/py3-flit/APKBUILD | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/community/py3-flit/APKBUILD b/community/py3-flit/APKBUILD
+index e6adb3808f..8e5a8320ee 100644
+--- a/community/py3-flit/APKBUILD
++++ b/community/py3-flit/APKBUILD
+@@ -16,6 +16,7 @@ depends="
+ 	"
+ makedepends="
+ 	py3-installer
++	git
+ 	"
+ checkdepends="
+ 	py3-pytest-cov
+-- 
+2.34.1
+

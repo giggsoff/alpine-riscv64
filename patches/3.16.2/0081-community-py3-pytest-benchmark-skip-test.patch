@@ -1,0 +1,25 @@
+From b97b6e54a27c084c637b05c0701b880183271224 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Wed, 31 Aug 2022 12:01:44 +0300
+Subject: [PATCH] community/py3-pytest-benchmark skip test
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ community/py3-pytest-benchmark/APKBUILD | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/community/py3-pytest-benchmark/APKBUILD b/community/py3-pytest-benchmark/APKBUILD
+index ec1603d332..13bf4331be 100644
+--- a/community/py3-pytest-benchmark/APKBUILD
++++ b/community/py3-pytest-benchmark/APKBUILD
+@@ -35,6 +35,7 @@ check() {
+ 		--deselect tests/test_cli.py::test_help_compare \
+ 		--deselect tests/test_cli.py::test_help_list \
+ 		--deselect tests/test_cli.py::test_help_command \
++		--deselect tests/test_utils.py::test_commit_info_error \
+ 		--deselect tests/test_cli.py::test_help
+ }
+ 
+-- 
+2.34.1
+

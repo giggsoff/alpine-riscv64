@@ -1,0 +1,26 @@
+From e74130c78ee0d0d19f415cf1877e8ee42abaeaa3 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 30 Aug 2022 15:59:32 +0300
+Subject: [PATCH] community/linux-tools add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ community/linux-tools/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/community/linux-tools/APKBUILD b/community/linux-tools/APKBUILD
+index 90fa0ac628..0797fa7322 100644
+--- a/community/linux-tools/APKBUILD
++++ b/community/linux-tools/APKBUILD
+@@ -14,7 +14,7 @@ depends="perf cpupower $pkgname-gpio $pkgname-iio"
+ depends_dev="pciutils-dev readline-dev gettext-dev"
+ makedepends="$depends_dev elfutils-dev bash linux-headers flex bison diffutils
+ 	zlib-dev findutils python3 ncurses-dev
+-	automake autoconf libtool libudev-zero-dev sysfsutils-dev glib-dev"
++	automake autoconf libtool libudev-zero-dev sysfsutils-dev glib-dev coreutils"
+ subpackages="perf perf-bash-completion:perf_bashcomp:noarch
+ 	cpupower cpupower-openrc cpupower-bash-completion:cpupower_bashcomp:noarch
+ 	$pkgname-gpio $pkgname-iio $pkgname-doc $pkgname-dev
+-- 
+2.34.1
+

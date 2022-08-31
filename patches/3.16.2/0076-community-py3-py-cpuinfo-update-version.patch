@@ -1,0 +1,282 @@
+From 156bdb14c9917ed954ccc6c78abb40b0bd16635d Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 30 Aug 2022 21:27:55 +0300
+Subject: [PATCH] community/py3-py-cpuinfo update version
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ .../0001-Add-support-for-RISC-V.patch         | 229 ++++++++++++++++++
+ community/py3-py-cpuinfo/APKBUILD             |  11 +-
+ 2 files changed, 236 insertions(+), 4 deletions(-)
+ create mode 100644 community/py3-py-cpuinfo/0001-Add-support-for-RISC-V.patch
+
+diff --git a/community/py3-py-cpuinfo/0001-Add-support-for-RISC-V.patch b/community/py3-py-cpuinfo/0001-Add-support-for-RISC-V.patch
+new file mode 100644
+index 0000000000..53b090c31f
+--- /dev/null
++++ b/community/py3-py-cpuinfo/0001-Add-support-for-RISC-V.patch
+@@ -0,0 +1,229 @@
++From fccc6a66cac5606fdf8ab73ca8a20b30bad36993 Mon Sep 17 00:00:00 2001
++From: Felix Yan <felixonmars@archlinux.org>
++Date: Mon, 30 Aug 2021 17:06:33 +0300
++Subject: [PATCH] Add support for RISC-V
++
++All tests passed, and verified on a native machine.
++
++Data in the new test case was collected from a real
++HiFive Unmatched board running Ubuntu 21.04.
++
++(cherry picked from commit 657b36747355523f8cf97e170a5327c188eb3f23)
++---
++ cpuinfo/cpuinfo.py                       |  18 ++-
++ tests/test_invalid_cpu.py                |   2 +-
++ tests/test_linux_ubuntu_21_04_riscv64.py | 140 +++++++++++++++++++++++
++ 3 files changed, 165 insertions(+), 6 deletions(-)
++ create mode 100644 tests/test_linux_ubuntu_21_04_riscv64.py
++
++diff --git a/cpuinfo/cpuinfo.py b/cpuinfo/cpuinfo.py
++index 3a2752d..2f404c4 100644
++--- a/cpuinfo/cpuinfo.py
+++++ b/cpuinfo/cpuinfo.py
++@@ -370,9 +370,10 @@ def _read_windows_registry_key(key_name, field_name):
++ def _check_arch():
++ 	arch, bits = _parse_arch(DataSource.arch_string_raw)
++ 	if not arch in ['X86_32', 'X86_64', 'ARM_7', 'ARM_8',
++-	               'PPC_64', 'S390X', 'MIPS_32', 'MIPS_64']:
+++	               'PPC_64', 'S390X', 'MIPS_32', 'MIPS_64',
+++				   "RISCV_32", "RISCV_64"]:
++ 		raise Exception("py-cpuinfo currently only works on X86 "
++-		                "and some ARM/PPC/S390X/MIPS CPUs.")
+++		                "and some ARM/PPC/S390X/MIPS/RISCV CPUs.")
++ 
++ def _obj_to_b64(thing):
++ 	import pickle
++@@ -590,6 +591,10 @@ def _friendly_bytes_to_int(friendly_bytes):
++ 	input = friendly_bytes.lower()
++ 
++ 	formats = {
+++		'gib' : 1024 * 1024 * 1024,
+++		'mib' : 1024 * 1024,
+++		'kib' : 1024,
+++
++ 		'gb' : 1024 * 1024 * 1024,
++ 		'mb' : 1024 * 1024,
++ 		'kb' : 1024,
++@@ -827,6 +832,13 @@ def _parse_arch(arch_string_raw):
++ 	elif arch_string_raw == 'mips64':
++ 		arch = 'MIPS_64'
++ 		bits = 64
+++	# RISCV
+++	elif re.match(r'^riscv$|^riscv32$|^riscv32be$', arch_string_raw):
+++		arch = 'RISCV_32'
+++		bits = 32
+++	elif re.match(r'^riscv64$|^riscv64be$', arch_string_raw):
+++		arch = 'RISCV_64'
+++		bits = 64
++ 
++ 	return (arch, bits)
++ 
++@@ -1710,7 +1722,7 @@ def _get_cpu_info_from_proc_cpuinfo():
++ 
++ 		# Various fields
++ 		vendor_id = _get_field(False, output, None, '', 'vendor_id', 'vendor id', 'vendor')
++-		processor_brand = _get_field(True, output, None, None, 'model name','cpu', 'processor')
+++		processor_brand = _get_field(True, output, None, None, 'model name', 'cpu', 'processor', 'uarch')
++ 		cache_size = _get_field(False, output, None, '', 'cache size')
++ 		stepping = _get_field(False, output, int, 0, 'stepping')
++ 		model = _get_field(False, output, int, 0, 'model')
++diff --git a/tests/test_invalid_cpu.py b/tests/test_invalid_cpu.py
++index 1931ecf..d4e75a0 100644
++--- a/tests/test_invalid_cpu.py
+++++ b/tests/test_invalid_cpu.py
++@@ -33,4 +33,4 @@ class TestInvalidCPU(unittest.TestCase):
++ 			cpuinfo._check_arch()
++ 			self.fail('Failed to raise Exception')
++ 		except Exception as err:
++-			self.assertEqual('py-cpuinfo currently only works on X86 and some ARM/PPC/S390X/MIPS CPUs.', err.args[0])
+++			self.assertEqual('py-cpuinfo currently only works on X86 and some ARM/PPC/S390X/MIPS/RISCV CPUs.', err.args[0])
++diff --git a/tests/test_linux_ubuntu_21_04_riscv64.py b/tests/test_linux_ubuntu_21_04_riscv64.py
++new file mode 100644
++index 0000000..80da86f
++--- /dev/null
+++++ b/tests/test_linux_ubuntu_21_04_riscv64.py
++@@ -0,0 +1,140 @@
+++
+++
+++import unittest
+++from cpuinfo import *
+++import helpers
+++
+++
+++class MockDataSource(object):
+++	bits = '64bit'
+++	cpu_count = 4
+++	is_windows = False
+++	arch_string_raw = 'riscv64'
+++	uname_string_raw = 'riscv64'
+++	can_cpuid = False
+++
+++	@staticmethod
+++	def has_proc_cpuinfo():
+++		return True
+++
+++	@staticmethod
+++	def has_dmesg():
+++		return True
+++
+++	@staticmethod
+++	def has_lscpu():
+++		return True
+++
+++	@staticmethod
+++	def has_ibm_pa_features():
+++		return False
+++
+++	@staticmethod
+++	def cat_proc_cpuinfo():
+++		returncode = 0
+++		output = r'''
+++processor       : 0
+++hart            : 2
+++isa             : rv64imafdc
+++mmu             : sv39
+++uarch           : sifive,u74-mc
+++
+++processor       : 1
+++hart            : 1
+++isa             : rv64imafdc
+++mmu             : sv39
+++uarch           : sifive,u74-mc
+++
+++processor       : 2
+++hart            : 3
+++isa             : rv64imafdc
+++mmu             : sv39
+++uarch           : sifive,u74-mc
+++
+++processor       : 3
+++hart            : 4
+++isa             : rv64imafdc
+++mmu             : sv39
+++uarch           : sifive,u74-mc
+++
+++'''
+++		return returncode, output
+++
+++	@staticmethod
+++	def dmesg_a():
+++		returncode = 1
+++		output = r'''
+++dmesg: read kernel buffer failed: Operation not permitted
+++
+++'''
+++		return returncode, output
+++
+++	@staticmethod
+++	def lscpu():
+++		returncode = 0
+++		output = r'''
+++Architecture:        riscv64
+++Byte Order:          Little Endian
+++CPU(s):              4
+++On-line CPU(s) list: 0-3
+++Thread(s) per core:  4
+++Core(s) per socket:  1
+++Socket(s):           1
+++L1d cache:           32 KiB
+++L1i cache:           32 KiB
+++L2 cache:            2 MiB
+++
+++
+++'''
+++		return returncode, output
+++
+++
+++class TestLinuxUbuntu_21_04_riscv64(unittest.TestCase):
+++	def setUp(self):
+++		helpers.backup_data_source(cpuinfo)
+++		helpers.monkey_patch_data_source(cpuinfo, MockDataSource)
+++
+++	def tearDown(self):
+++		helpers.restore_data_source(cpuinfo)
+++
+++	'''
+++	Make sure calls return the expected number of fields.
+++	'''
+++	def test_returns(self):
+++		self.assertEqual(0, len(cpuinfo._get_cpu_info_from_registry()))
+++		self.assertEqual(0, len(cpuinfo._get_cpu_info_from_cpufreq_info()))
+++		self.assertEqual(3, len(cpuinfo._get_cpu_info_from_lscpu()))
+++		self.assertEqual(1, len(cpuinfo._get_cpu_info_from_proc_cpuinfo()))
+++		self.assertEqual(0, len(cpuinfo._get_cpu_info_from_sysctl()))
+++		self.assertEqual(0, len(cpuinfo._get_cpu_info_from_kstat()))
+++		self.assertEqual(0, len(cpuinfo._get_cpu_info_from_dmesg()))
+++		self.assertEqual(0, len(cpuinfo._get_cpu_info_from_cat_var_run_dmesg_boot()))
+++		self.assertEqual(0, len(cpuinfo._get_cpu_info_from_ibm_pa_features()))
+++		self.assertEqual(0, len(cpuinfo._get_cpu_info_from_sysinfo()))
+++		self.assertEqual(0, len(cpuinfo._get_cpu_info_from_cpuid()))
+++		self.assertEqual(11, len(cpuinfo._get_cpu_info_internal()))
+++
+++	def test_get_cpu_info_from_lscpu(self):
+++		info = cpuinfo._get_cpu_info_from_lscpu()
+++		self.assertEqual(32 * 1024, info['l1_instruction_cache_size'])
+++		self.assertEqual(32 * 1024, info['l1_data_cache_size'])
+++		self.assertEqual(2 * 1024 * 1024, info['l2_cache_size'])
+++		self.assertEqual(3, len(info))
+++	
+++	def test_get_cpu_info_from_proc_cpuinfo(self):
+++		info = cpuinfo._get_cpu_info_from_proc_cpuinfo()
+++		self.assertEqual('sifive,u74-mc', info['brand_raw'])
+++		self.assertEqual(1, len(info))
+++
+++	def test_all(self):
+++		info = cpuinfo._get_cpu_info_internal()
+++		print(info)
+++
+++		self.assertEqual('sifive,u74-mc', info['brand_raw'])
+++		self.assertEqual('RISCV_64', info['arch'])
+++		self.assertEqual(64, info['bits'])
+++		self.assertEqual(4, info['count'])
+++		self.assertEqual(32 * 1024, info['l1_instruction_cache_size'])
+++		self.assertEqual(32 * 1024, info['l1_data_cache_size'])
+++		self.assertEqual(2 * 1024 * 1024, info['l2_cache_size'])
+++		self.assertEqual('riscv64', info['arch_string_raw'])
++ 
++-- 
++2.34.1
++
+diff --git a/community/py3-py-cpuinfo/APKBUILD b/community/py3-py-cpuinfo/APKBUILD
+index 774ca90ae8..6f3475e610 100644
+--- a/community/py3-py-cpuinfo/APKBUILD
++++ b/community/py3-py-cpuinfo/APKBUILD
+@@ -2,15 +2,16 @@
+ # Maintainer: Fabian Affolter <fabian@affolter-engineering.ch>
+ pkgname=py3-py-cpuinfo
+ _pkgname=py-cpuinfo
+-pkgver=7.0.0
+-pkgrel=2
++pkgver=8.0.0
++pkgrel=0
+ pkgdesc="Pure-Python module for getting CPU info"
+ url="https://github.com/workhorsy/py-cpuinfo"
+ arch="noarch"
+ license="MIT"
+ depends="python3"
+ makedepends="py3-setuptools"
+-source="https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/$_pkgname/$_pkgname-$pkgver.tar.gz"
++source="https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/$_pkgname/$_pkgname-$pkgver.tar.gz
++0001-Add-support-for-RISC-V.patch"
+ builddir="$srcdir"/$_pkgname-$pkgver
+ 
+ replaces="py-cpuinfo" # Backwards compatibility
+@@ -28,4 +29,6 @@ package() {
+ 	python3 setup.py install --prefix=/usr --root="$pkgdir"
+ }
+ 
+-sha512sums="fd291533dc5e78d75851e61ef2a754d9bdb62cbb5e04c86db0d6ea2d074a1e920b1ff50c136df3dd640cb64deaccd4f187c5af02c586a3d28b8c74dfe4143893  py-cpuinfo-7.0.0.tar.gz"
++sha512sums="77351f9f2fd33b09d0ee998dd2b3eb971bbe9094bee5636356d5a5a2747ebba3c112cccfdf929f77e3b7de3c745f98ecfac8edeb0d84fede100b637b554d4fd9  py-cpuinfo-8.0.0.tar.gz
++be0107769479de61ad522040eac5e0bda93e45ddf26ca54b49e426486c1b06a2b1f1a4e7ebd9453451a489ec518be1dd08553ee0bb927e6001ad4a31811cae6f  0001-Add-support-for-RISC-V.patch
++"
+-- 
+2.34.1
+

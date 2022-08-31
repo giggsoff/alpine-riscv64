@@ -1,0 +1,115 @@
+From a60e42806ff1035e46e1a875268fce065675730a Mon Sep 17 00:00:00 2001
+From: psykose <alice@ayaya.dev>
+Date: Fri, 1 Jul 2022 03:38:51 +0000
+Subject: [PATCH] main/py3-cffi: upgrade to 1.15.1
+
+(cherry picked from commit a63ae573acc6f9d78d7d001d5becc726a9581473)
+---
+ main/py3-cffi/APKBUILD          |  8 ++--
+ main/py3-cffi/musl-compat.patch | 65 ---------------------------------
+ 2 files changed, 3 insertions(+), 70 deletions(-)
+
+diff --git a/main/py3-cffi/APKBUILD b/main/py3-cffi/APKBUILD
+index 2cd0d54dad..269993509b 100644
+--- a/main/py3-cffi/APKBUILD
++++ b/main/py3-cffi/APKBUILD
+@@ -2,7 +2,7 @@
+ # Maintainer:
+ pkgname=py3-cffi
+ _pkgname=cffi
+-pkgver=1.15.0
++pkgver=1.15.1
+ pkgrel=0
+ pkgdesc="Foreign function interface for calling C code from Python3"
+ url="http://cffi.readthedocs.org/"
+@@ -11,8 +11,7 @@ license="MIT"
+ depends="py3-cparser"
+ makedepends="python3-dev py3-setuptools libffi-dev"
+ checkdepends="py3-pytest"
+-source="https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/$_pkgname/$_pkgname-$pkgver.tar.gz
+-	musl-compat.patch"
++source="https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/$_pkgname/$_pkgname-$pkgver.tar.gz"
+ builddir="$srcdir/$_pkgname-$pkgver"
+ 
+ replaces="py-cffi" # Backwards compatibility
+@@ -36,6 +35,5 @@ package() {
+ }
+ 
+ sha512sums="
+-ee83efde6f77f4a0c5889088c4c208ed7b9071fe06dfc16a8d2396de07f78fe859e1e39866760198a9d700f3b7359e8715e8a3e4907feb81d3fc4b8dd0dbaca1  cffi-1.15.0.tar.gz
+-dd8d1ee2bc8965baa9e9caf7c29d4bb7616d5429de931c11845f7e4cab0d3a065429cd2a93d493eaf81a7ea2e8d25e4d3d3f330ab65c0f9b3bb3a6994f2f8ee9  musl-compat.patch
++e99cafcb029076abc29e435b490fa0573ee2856f4051b7ca8a5b38cd125d56dd9dae8b189f59ceb3d728a675da8ee83239e09e19f8b0feeddea4b186ab5173a5  cffi-1.15.1.tar.gz
+ "
+diff --git a/main/py3-cffi/musl-compat.patch b/main/py3-cffi/musl-compat.patch
+index 1145250a1b..e69de29bb2 100644
+--- a/main/py3-cffi/musl-compat.patch
++++ b/main/py3-cffi/musl-compat.patch
+@@ -1,65 +0,0 @@
+---- a/c/test_c.py
+-+++ b/c/test_c.py
+-@@ -86,7 +86,6 @@
+-     if sys.platform.startswith("linux"):
+-         RTLD_NODELETE
+-         RTLD_NOLOAD
+--        RTLD_DEEPBIND
+- 
+- def test_new_primitive_type():
+-     py.test.raises(KeyError, new_primitive_type, "foo")
+-@@ -1237,8 +1236,7 @@
+- def test_write_variable():
+-     ## FIXME: this test assumes glibc specific behavior, it's not compliant with C standard
+-     ## https://bugs.pypy.org/issue1643
+--    if not sys.platform.startswith("linux"):
+--        py.test.skip("untested")
+-+    py.test.skip("'stderr' is read-only in musl")
+-     BVoidP = new_pointer_type(new_void_type())
+-     ll = find_and_load_library('c')
+-     stderr = ll.read_variable(BVoidP, "stderr")
+---- a/testing/cffi0/test_function.py
+-+++ b/testing/cffi0/test_function.py
+-@@ -166,7 +166,7 @@
+-                        b"hello, world!\n"
+-                        b"hello, world2!\n"
+-                        b"hello int 42 long 84 long long 168\n"
+--                       b"hello (nil)\n")
+-+                       b"hello 0\n")
+- 
+-     def test_must_specify_type_of_vararg(self):
+-         ffi = FFI(backend=self.Backend())
+-@@ -249,8 +249,7 @@
+-         assert res == 5
+- 
+-     def test_write_variable(self):
+--        if not sys.platform.startswith('linux'):
+--            py.test.skip("probably no symbol 'stdout' in the lib")
+-+        py.test.skip("'stdout' is read-only in musl")
+-         ffi = FFI(backend=self.Backend())
+-         ffi.cdef("""
+-             void *stdout;
+---- a/testing/cffi0/test_verify.py
+-+++ b/testing/cffi0/test_verify.py
+-@@ -1612,8 +1612,7 @@
+-     assert func() == 42
+- 
+- def test_FILE_stored_in_stdout():
+--    if not sys.platform.startswith('linux'):
+--        py.test.skip("likely, we cannot assign to stdout")
+-+    py.test.skip("'stdout' is read-only in musl")
+-     ffi = FFI()
+-     ffi.cdef("int printf(const char *, ...); FILE *setstdout(FILE *);")
+-     lib = ffi.verify("""
+---- a/testing/cffi1/test_verify1.py
+-+++ b/testing/cffi1/test_verify1.py
+-@@ -1576,8 +1576,7 @@
+-     assert func() == 42
+- 
+- def test_FILE_stored_in_stdout():
+--    if not sys.platform.startswith('linux'):
+--        py.test.skip("likely, we cannot assign to stdout")
+-+    py.test.skip("'stdout' is read-only in musl")
+-     ffi = FFI()
+-     ffi.cdef("int printf(const char *, ...); FILE *setstdout(FILE *);")
+-     lib = ffi.verify("""
+-- 
+2.34.1
+

@@ -1,0 +1,26 @@
+From 2002bed184c5c5d001580596d9115912892f880e Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Mon, 29 Aug 2022 15:52:48 +0300
+Subject: [PATCH] community/go no tests
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ community/go/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/community/go/APKBUILD b/community/go/APKBUILD
+index 19115a9f3a..de3de2aaef 100644
+--- a/community/go/APKBUILD
++++ b/community/go/APKBUILD
+@@ -143,7 +143,7 @@ esac
+ # force-external-link-on-ppc64le.patch we employ currently.
+ # See the patch description for details.
+ case "$CARCH" in
+-ppc64le) options="!check" ;;
++ppc64le|riscv64) options="!check" ;;
+ esac
+ 
+ prepare() {
+-- 
+2.34.1
+

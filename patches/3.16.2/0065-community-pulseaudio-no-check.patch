@@ -1,0 +1,27 @@
+From 0234ddd55fc0f29c8dcd92426561a06897b4dadb Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Mon, 29 Aug 2022 21:20:23 +0300
+Subject: [PATCH] community/pulseaudio no check
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ community/pulseaudio/APKBUILD | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/community/pulseaudio/APKBUILD b/community/pulseaudio/APKBUILD
+index 505eff87a5..d61d53b87e 100644
+--- a/community/pulseaudio/APKBUILD
++++ b/community/pulseaudio/APKBUILD
+@@ -77,6 +77,9 @@ case "$CARCH" in
+ 	s390x)
+ 		options="$options !check" # mix-test fails, all others pass
+ 		;;
++	riscv64)
++		options="$options !check"
++		;;
+ esac
+ 
+ case "$CARCH" in
+-- 
+2.34.1
+

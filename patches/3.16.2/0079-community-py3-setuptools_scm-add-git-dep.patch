@@ -1,0 +1,26 @@
+From fb82cbdc93c09d826c64467ba3094a07bea62227 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 30 Aug 2022 23:08:30 +0300
+Subject: [PATCH] community/py3-setuptools_scm add git dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ community/py3-setuptools_scm/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/community/py3-setuptools_scm/APKBUILD b/community/py3-setuptools_scm/APKBUILD
+index 02958cbf81..3f5cb4b024 100644
+--- a/community/py3-setuptools_scm/APKBUILD
++++ b/community/py3-setuptools_scm/APKBUILD
+@@ -9,7 +9,7 @@ url="https://github.com/pypa/setuptools_scm"
+ arch="noarch"
+ license="MIT"
+ depends="py3-setuptools py3-tomli py3-packaging"
+-checkdepends="py3-pytest mercurial"
++checkdepends="py3-pytest mercurial git"
+ source="https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/$_pkgname/$_pkgname-$pkgver.tar.gz
+ 	test_integration.patch
+ 	deprecation-warning.patch"
+-- 
+2.34.1
+

@@ -1,0 +1,26 @@
+From 86ba13d3f1419abf0006d07b417b3733d608803b Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Mon, 29 Aug 2022 18:54:41 +0300
+Subject: [PATCH] main/ell do not test
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/ell/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/ell/APKBUILD b/main/ell/APKBUILD
+index 0ecc997edf..b5c43d1b8c 100644
+--- a/main/ell/APKBUILD
++++ b/main/ell/APKBUILD
+@@ -14,7 +14,7 @@ source="https://mirrors.edge.kernel.org/pub/linux/libs/ell/ell-$pkgver.tar.gz
+ 	"
+ 
+ case "$CARCH" in
+-aarch64|arm*) options="!check" ;;
++aarch64|arm*|riscv64) options="!check" ;;
+ esac
+ 
+ build() {
+-- 
+2.34.1
+

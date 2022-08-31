@@ -1,0 +1,26 @@
+From 2bce1069447c49512f221f4ec985d567958d7964 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Mon, 29 Aug 2022 17:32:07 +0300
+Subject: [PATCH] main/libtheora add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/libtheora/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/libtheora/APKBUILD b/main/libtheora/APKBUILD
+index 32825bcb92..a9f31af79c 100644
+--- a/main/libtheora/APKBUILD
++++ b/main/libtheora/APKBUILD
+@@ -9,7 +9,7 @@ license="BSD-3-Clause"
+ subpackages="$pkgname-static $pkgname-dev $pkgname-doc"
+ depends_dev="libogg-dev"
+ makedepends="libvorbis-dev libogg-dev autoconf automake libtool
+-	linux-headers"
++	linux-headers coreutils"
+ source="http://downloads.xiph.org/releases/theora/libtheora-$pkgver.tar.bz2
+ 	libtheora-flags.patch
+ 	enc.patch
+-- 
+2.34.1
+

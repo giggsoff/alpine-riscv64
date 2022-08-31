@@ -1,0 +1,26 @@
+From 2bf238ab4b24c55818d568bed11fed72e9b1d67d Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 30 Aug 2022 12:18:14 +0300
+Subject: [PATCH] community/tslib add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ community/tslib/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/community/tslib/APKBUILD b/community/tslib/APKBUILD
+index 672b2d0944..d144b1b287 100644
+--- a/community/tslib/APKBUILD
++++ b/community/tslib/APKBUILD
+@@ -7,7 +7,7 @@ pkgdesc="Touchscreen Access Library"
+ arch="all"
+ url="https://github.com/kergoth/tslib"
+ license="LGPL-2.0-or-later"
+-makedepends="autoconf automake libtool linux-headers"
++makedepends="autoconf automake libtool linux-headers coreutils"
+ source="https://github.com/kergoth/tslib/releases/download/$pkgver/tslib-$pkgver.tar.xz"
+ subpackages="$pkgname-dev $pkgname-doc"
+ 
+-- 
+2.34.1
+

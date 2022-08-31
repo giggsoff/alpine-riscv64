@@ -45,3 +45,6 @@ ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 USER builder
 WORKDIR /home/builder
 CMD sh
+
+# to build minirootfs:
+# ./mkimage.sh --repository ~/packages/main --repository ~/packages/community --outdir ~/minirootfs --profile "minirootfs"

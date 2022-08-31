@@ -1,0 +1,26 @@
+From 7ff96ab20f1062745c1d37b434aa9a72dae3ec61 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 30 Aug 2022 21:21:47 +0300
+Subject: [PATCH] main/python3 skip another tests
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/python3/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/python3/APKBUILD b/main/python3/APKBUILD
+index 91d8b10acf..128ab478e3 100644
+--- a/main/python3/APKBUILD
++++ b/main/python3/APKBUILD
+@@ -171,7 +171,7 @@ EOF
+ 	# kernel related
+ 	fail="$fail test_fcntl"					# wants DNOTIFY, we don't have it
+ 
+-	fail="$fail test_cmd_line"
++	fail="$fail test_cmd_line test_ftplib test_httplib test_imaplib test_poplib test_signal test_ssl"
+ 
+ 	case "$CARCH" in
+ 	ppc64le)
+-- 
+2.34.1
+

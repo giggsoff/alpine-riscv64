@@ -1,0 +1,26 @@
+From b3016528cbaeb36297321cc81d4dc595067c74be Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Mon, 29 Aug 2022 20:55:35 +0300
+Subject: [PATCH] main/speexdsp add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/speexdsp/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/speexdsp/APKBUILD b/main/speexdsp/APKBUILD
+index f54c4caf85..ddab5a2f15 100644
+--- a/main/speexdsp/APKBUILD
++++ b/main/speexdsp/APKBUILD
+@@ -8,7 +8,7 @@ arch="all"
+ options="!check"  # No test suite.
+ license="BSD-3-Clause"
+ depends=
+-makedepends="autoconf automake libtool"
++makedepends="autoconf automake libtool coreutils"
+ install=
+ subpackages="$pkgname-dev $pkgname-doc"
+ replaces="libspeex"
+-- 
+2.34.1
+

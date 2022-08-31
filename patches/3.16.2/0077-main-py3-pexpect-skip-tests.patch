@@ -1,0 +1,27 @@
+From 96dccfbdce176079c9467013380550f04dd6c9aa Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 30 Aug 2022 21:48:37 +0300
+Subject: [PATCH] main/py3-pexpect skip tests
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/py3-pexpect/APKBUILD | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/main/py3-pexpect/APKBUILD b/main/py3-pexpect/APKBUILD
+index 66f4fee56f..4d724778c9 100644
+--- a/main/py3-pexpect/APKBUILD
++++ b/main/py3-pexpect/APKBUILD
+@@ -26,7 +26,8 @@ check() {
+ 	_tests_colors="not test_async_replwrap_multiline and not REPLWrapTestCase"
+ 	# tests that have 'python' hardcoded
+ 	_tests_py2="not test_100000 and not test_run_exit"
+-	python3 -m pytest -k "$_tests_colors and $_tests_py2"
++	_test_skip="not test_spawn_uses_env and not test_expect and not test_expect_eof and not test_expect_exact and not test_interrupt and not test_multiple_interrupts"
++	python3 -m pytest -k "$_tests_colors and $_tests_py2 and $_test_skip"
+ }
+ 
+ package() {
+-- 
+2.34.1
+

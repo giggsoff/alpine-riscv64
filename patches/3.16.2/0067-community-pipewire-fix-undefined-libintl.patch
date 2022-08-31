@@ -1,0 +1,25 @@
+From ae4ef0d9615fc3db643d2b96becb5094a4a0e185 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 30 Aug 2022 12:10:56 +0300
+Subject: [PATCH] community/pipewire fix undefined libintl
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ community/pipewire/APKBUILD | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/community/pipewire/APKBUILD b/community/pipewire/APKBUILD
+index 79992336b4..a40ccf98a7 100644
+--- a/community/pipewire/APKBUILD
++++ b/community/pipewire/APKBUILD
+@@ -72,6 +72,7 @@ case "$CARCH" in
+ esac
+ 
+ build() {
++	export LDFLAGS="$LDFLAGS -lintl"
+ 	abuild-meson \
+ 		-Dlibjack-path=/usr/lib \
+ 		-Dlibv4l2-path=/usr/lib \
+-- 
+2.34.1
+

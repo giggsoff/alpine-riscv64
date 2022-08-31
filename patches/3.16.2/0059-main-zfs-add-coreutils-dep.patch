@@ -1,0 +1,26 @@
+From ffc4a7f75d117a5ad5d4b61d56bc752afab0b632 Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Mon, 29 Aug 2022 12:05:32 +0300
+Subject: [PATCH] main/zfs add coreutils dep
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/zfs/APKBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main/zfs/APKBUILD b/main/zfs/APKBUILD
+index d7030435f5..2817388e29 100644
+--- a/main/zfs/APKBUILD
++++ b/main/zfs/APKBUILD
+@@ -9,7 +9,7 @@ arch="all"
+ license="CDDL-1.0"
+ provides="spl" # Mitigate upgrade conflicts
+ depends_dev="attr-dev e2fsprogs-dev glib-dev libtirpc-dev openssl1.1-compat-dev util-linux-dev"
+-makedepends="$depends_dev automake autoconf libtool linux-headers python3-dev py3-cffi py3-setuptools"
++makedepends="$depends_dev automake autoconf libtool linux-headers python3-dev py3-cffi py3-setuptools coreutils"
+ options="!check" # need to be run on live system w/ ZFS loaded.
+ subpackages="$pkgname-dev $pkgname-doc $pkgname-openrc $pkgname-libs $pkgname-dracut::noarch
+ 	$pkgname-udev $pkgname-scripts $pkgname-utils-py:utils_py:noarch py3-pyzfs:pyzfs:noarch"
+-- 
+2.34.1
+
