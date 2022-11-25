@@ -1,0 +1,48 @@
+From a53e3a7b8bd5b7737762be791672cc09804a619b Mon Sep 17 00:00:00 2001
+From: Petr Fedchenkov <giggsoff@gmail.com>
+Date: Tue, 30 Aug 2022 17:32:07 +0300
+Subject: [PATCH] main/openssl fix threads
+
+Signed-off-by: Petr Fedchenkov <giggsoff@gmail.com>
+---
+ main/openssl/APKBUILD | 7 -------
+ scripts/bootstrap.sh  | 4 ++--
+ 2 files changed, 2 insertions(+), 9 deletions(-)
+
+diff --git a/main/openssl/APKBUILD b/main/openssl/APKBUILD
+index 8b6215ef93..17506593de 100644
+--- a/main/openssl/APKBUILD
++++ b/main/openssl/APKBUILD
+@@ -95,13 +95,6 @@ build() {
+ 	# gcc's --sysroot fake this by overriding CC
+ 	[ -n "$CBUILDROOT" ] && CC="$CC --sysroot=$CBUILDROOT"
+ 
+-	# when cross building do not enable threads as libatomic is not avaiable
+-	if [ "$CBUILD" != "$CHOST" ]; then
+-		case $CARCH in
+-			riscv64) _optflags="$_optflags no-threads";;
+-		esac
+-	fi
+-
+ 	perl ./Configure \
+ 		$_target \
+ 		--prefix=/usr \
+diff --git a/scripts/bootstrap.sh b/scripts/bootstrap.sh
+index 496c660441..c8031e0f99 100755
+--- a/scripts/bootstrap.sh
++++ b/scripts/bootstrap.sh
+@@ -116,9 +116,9 @@ fi
+ 
+ # ordered cross-build
+ for PKG in fortify-headers linux-headers musl libc-dev pkgconf zlib \
+-	   openssl ca-certificates libmd \
++	   libmd \
+ 	   gmp mpfr4 mpc1 isl25 libucontext binutils gcc \
+-	   libbsd libretls busybox make \
++	   openssl ca-certificates libbsd libretls busybox make \
+ 	   apk-tools file \
+ 	   libcap openrc alpine-conf alpine-baselayout alpine-keys alpine-base patch build-base \
+ 	   attr acl fakeroot tar \
+-- 
+2.34.1
+

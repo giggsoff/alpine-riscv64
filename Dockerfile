@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=3.16.2
+ARG ALPINE_VERSION=3.17.0
 
 FROM alpine:${ALPINE_VERSION} as build
 
@@ -34,7 +34,7 @@ WORKDIR /
 
 RUN apk add --arch riscv64 -X /home/builder/packages/main --no-cache --initdb -p /rootfs busybox-static apk-tools-static
 RUN chroot /rootfs /bin/busybox.static --install -s /bin
-RUN chroot /rootfs /sbin/apk.static add apk-tools busybox alpine-baselayout alpine-base abuild ca-certificates
+RUN chroot /rootfs /sbin/apk.static add apk-tools busybox alpine-baselayout abuild ca-certificates
 
 # now build the final image
 FROM scratch
